@@ -55,45 +55,21 @@ if (empty ( $messages )) { // gdy brak błędów
 
 	switch($input_type){
 	case "2":
-		$decimal = 0;
-		$hex = "";
-		$hex_digit = 0;
-		
-		for($i=0;$i<strlen($input);$i++){
-			$place = strlen($input) - $i - 1;
-			
-			if(substr($input, $i, 1) == "1"){
-				$decimal += pow(2, $place);
-				$hex_digit += pow(2, $place % 4);
-			}
-			
-			if($i % 4 == (strlen($input) + 3) % 4){
-				if($hex_digit < 10)
-					$hex = $hex.$hex_digit;
-				else
-					$hex = $hex.chr($hex_digit - 10 + ord('A'));
-				$hex_digit = 0;
-			}
-		}
+		$binary = $input;
+		$decimal = getDecimal($binary);
+		$hex = getHex($binary);
 
 		break;
 	case "10":
-		$binary = "";
-		$hex = 0;
-		$decimal = (int)$input;
-		
-		for($i=strlen($input)*4;$i>=0;$i--){
-			if($decimal >= pow(2, $i)){
-				$binary = $binary."1";
-				$decimal -= pow(2, $i);
-			} else
-				$binary = $binary."0";
-		}
+		$decimal = $input;
+		$binary = getBinary($decimal);
+		$hex = getHex($binary);
 
 		break;
 	case "16":
-		$binary = 0;
-		$decimal = 0;
+		$hex = $input;
+		$decimal = getDecimalFromHex($hex);
+		$binary = getBinary($decimal);
 		break;
 
 	}
@@ -101,3 +77,67 @@ if (empty ( $messages )) { // gdy brak błędów
 
 // 4. Wywołanie widoku z przekazaniem zmiennych
 include 'converter_view.php';
+
+// Functions
+function getDecimal($binary) {
+	$decimal = 0;
+	for($i=0;$i<strlen($binary);$i++){
+		$place = strlen($binary) - $i - 1;
+		
+		if(substr($binary, $i, 1) == "1")
+			$decimal += pow(2, $place);
+	}
+	return $decimal;
+}
+function getHex($binary) {
+	$hex = "";
+	$hex_digit = 0;
+
+	for($i=0;$i<strlen($binary);$i++){
+		$place = strlen($binary) - $i - 1;
+		
+		if(substr($binary, $i, 1) == "1")
+			$hex_digit += pow(2, $place % 4);
+		
+		if($i % 4 == (strlen($binary) + 3) % 4){
+			if($hex_digit < 10)
+				$hex = $hex.$hex_digit;
+			else
+				$hex = $hex.chr($hex_digit - 10 + ord('A'));
+			$hex_digit = 0;
+		}
+	}
+	return $hex;
+}
+
+function getBinary($decimal) {
+	$binary = "";
+	
+	for($i=strlen($decimal)*4;$i>=0;$i--){
+		if($decimal >= pow(2, $i)){
+			$binary = $binary."1";
+			$decimal -= pow(2, $i);
+		} else
+			$binary = $binary."0";
+	}
+	return $binary;
+}
+function getDecimalFromHex($hex) {
+	$decimal = 0;
+	
+	for($i=0;$i<strlen($hex);$i++){
+		$place = strlen($hex) - $i - 1;
+		$char = substr($hex, $i, 1);
+		if(ord($char) >= ord('0') && ord($char) <= ord('9'))
+			$value = (int)$char;
+		else{
+			if(ord($char) <= ord('G'))
+				$value = ord($char) - ord('A') + 10;
+			else
+				$value = ord($char) - ord('a') + 10;
+		}
+		
+		$decimal += $value * pow(16, $place);
+	}
+	return $decimal;
+}
