@@ -1,84 +1,79 @@
 <?php
-// KONTROLER strony kalkulatora
 require_once dirname(__FILE__).'/../config.php';
 
-// W kontrolerze niczego nie wysyła się do klienta.
-// Wysłaniem odpowiedzi zajmie się odpowiedni widok.
-// Parametry do widoku przekazujemy przez zmienne.
+include _ROOT_PATH.'/security/check.php';
 
 // 1. pobranie parametrów
-
-$input = $_REQUEST['input'];
-$input_type = $_REQUEST['input_type'];
+function getParams(&$input, &$input_type){
+	$input = isset($_REQUEST['input']) ? $_REQUEST['input'] : null;
+	$input_type = isset($_REQUEST['input_type']) ? $_REQUEST['input_type'] : null;
+}
 
 // 2. walidacja parametrów z przygotowaniem zmiennych dla widoku
+function validate (&$input, &$input_type, &$messages){
+	if ( ! (isset($input) && isset($input_type))) {
+		return false;
+	}
 
-// sprawdzenie, czy parametry zostały przekazane
-if ( ! (isset($input) && isset($input_type))) {
+	if (empty($messages) && $input == "") {
+		$messages [] = 'Nie podano liczby';
+	}
 
-	//sytuacja wystąpi kiedy np. kontroler zostanie wywołany bezpośrednio - nie z formularza
-	$messages [] = 'Błędne wywołanie aplikacji. Brak jednego z parametrów.';
-}
+	if (empty( $messages )) {
 
-// sprawdzenie, czy potrzebne wartości zostały przekazane
-if ( $input == "") {
-	$messages [] = 'Nie podano liczby';
-}
-
-//nie ma sensu walidować dalej gdy brak parametrów
-if (empty( $messages )) {
-
-	for($i=0; $i<strlen($input); $i++){
-		if(empty ($messages)){
-			$char = substr($input, $i, 1);
-			switch($input_type){
-				case "2":
-					if($char < "0" || $char > "1")
-						$messages [] = 'Liczba zawiera nieodpowiednie znaki';
-					break;
-				case "10":
-					if($char < "0" || $char > "9")
-						$messages [] = 'Liczba zawiera nieodpowiednie znaki';
-					break;
-				case "16":
-					if(($char < "0" || $char > "9") && ($char < "A" || $char > "F") && ($char < "a" || $char > "f"))
-						$messages [] = 'Liczba zawiera nieodpowiednie znaki';
-					break;
+		for($i=0; $i<strlen($input); $i++){
+			if(empty ($messages)){
+				$char = substr($input, $i, 1);
+				switch($input_type){
+					case "2":
+						if($char < "0" || $char > "1")
+							$messages [] = 'Liczba binarna zawiera nieodpowiednie znaki';
+						break;
+					case "10":
+						if($char < "0" || $char > "9")
+							$messages [] = 'Liczba dziesiętna zawiera nieodpowiednie znaki';
+						break;
+					case "16":
+						if(($char < "0" || $char > "9") && ($char < "A" || $char > "F") && ($char < "a" || $char > "f"))
+							$messages [] = 'Liczba szestnastkowa zawiera nieodpowiednie znaki';
+						break;
+				}
 			}
 		}
 	}
+	return empty($messages);
 }
 
 // 3. wykonaj zadanie jeśli wszystko w porządku
+function process(&$input, &$input_type, &$messages, &$results){
+	if (empty ( $messages )) { // gdy brak błędów
+		switch($input_type){
+		case "2":
+			$binary = $input;
+			$decimal = getDecimal($binary);
+			$hex = getHex($binary);
 
-if (empty ( $messages )) { // gdy brak błędów
+			break;
+		case "10":
+			$decimal = $input;
+			$binary = getBinary($decimal);
+			$hex = getHex($binary);
 
-	switch($input_type){
-	case "2":
-		$binary = $input;
-		$decimal = getDecimal($binary);
-		$hex = getHex($binary);
+			break;
+		case "16":
+			$hex = $input;
+			$decimal = getDecimalFromHex($hex);
+			$binary = getBinary($decimal);
+			break;
+		}
 
-		break;
-	case "10":
-		$decimal = $input;
-		$binary = getBinary($decimal);
-		$hex = getHex($binary);
-
-		break;
-	case "16":
-		$hex = $input;
-		$decimal = getDecimalFromHex($hex);
-		$binary = getBinary($decimal);
-		break;
-
+		$results [] = $binary;
+		$results [] = $decimal;
+		$results [] = $hex;
 	}
 }
 
-// 4. Wywołanie widoku z przekazaniem zmiennych
-include 'converter_view.php';
-
-// Functions
+// Processing functions
 function getDecimal($binary) {
 	$decimal = 0;
 	for($i=0;$i<strlen($binary);$i++){
@@ -141,3 +136,18 @@ function getDecimalFromHex($hex) {
 	}
 	return $decimal;
 }
+
+// Defining variables
+$input = null;
+$input_type = null;
+$results = array();
+$messages = array();
+
+getParams($input, $input_type);
+if(validate($input, $input_type, $messages)){
+	process($input, $input_type, $messages, $results);
+}
+
+// 4. Wywołanie widoku z przekazaniem zmiennych
+include 'converter_view.php';
+
