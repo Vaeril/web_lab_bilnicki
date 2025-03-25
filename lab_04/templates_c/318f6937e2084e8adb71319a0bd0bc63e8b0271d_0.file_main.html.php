@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.2, created on 2025-03-25 08:04:36
-  from 'file:C:\xampp\htdocs\web_lab_bilnicki\lab_03_smarty\app\../templates/main.html' */
+/* Smarty version 5.4.2, created on 2025-03-25 09:20:23
+  from 'file:C:\xampp\htdocs\web_lab_bilnicki\lab_04\app\../templates/main.html' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.2',
-  'unifunc' => 'content_67e25584587584_75317978',
+  'unifunc' => 'content_67e267472b79a8_55730551',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    'f9ebfafc5e0501460f95bfaeefb46f798edb83e1' => 
+    '318f6937e2084e8adb71319a0bd0bc63e8b0271d' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\app\\../templates/main.html',
-      1 => 1742885896,
+      0 => 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_04\\app\\../templates/main.html',
+      1 => 1742890808,
       2 => 'file',
     ),
   ),
@@ -20,8 +20,8 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_67e25584587584_75317978 (\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\templates';
+function content_67e267472b79a8_55730551 (\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_04\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 ?>
 <!DOCTYPE html>
@@ -42,23 +42,23 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 
 
   <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="<?php echo $_smarty_tpl->getValue('app_url');?>
+  <link rel="stylesheet" type="text/css" href="<?php echo $_smarty_tpl->getValue('config')->app_url;?>
 /css/bootstrap.css" />
 
   <!-- fonts style -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
 
   <!-- font awesome style -->
-  <link href="<?php echo $_smarty_tpl->getValue('app_url');?>
+  <link href="<?php echo $_smarty_tpl->getValue('config')->app_url;?>
 /css/font-awesome.min.css" rel="stylesheet" />
   <!-- nice select -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha256-mLBIhmBvigTFWPSCtvdu6a76T+3Xyt+K571hupeFLg4=" crossorigin="anonymous" />
 
   <!-- Custom styles for this template -->
-  <link href="<?php echo $_smarty_tpl->getValue('app_url');?>
+  <link href="<?php echo $_smarty_tpl->getValue('config')->app_url;?>
 /css/style.css" rel="stylesheet" />
   <!-- responsive style -->
-  <link href="<?php echo $_smarty_tpl->getValue('app_url');?>
+  <link href="<?php echo $_smarty_tpl->getValue('config')->app_url;?>
 /css/responsive.css" rel="stylesheet" />
 
 </head>
@@ -105,13 +105,13 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
         </div>
         <div class="find_container ">
           <div class="container">
-            <form action="<?php echo $_smarty_tpl->getValue('app_url');?>
-/app/converter.php#wyniki" method="post">
+            <form action="<?php echo $_smarty_tpl->getValue('config')->app_url;?>
+/app/mainCtrl.php#wyniki" method="post">
               <div class="row">
               <div class="col">
                 <div class="form-row ">
                   <div class="form-group col-lg-3">
-                  <input type="text" class="form-control" id="input" name="input" placeholder="Liczba" value="<?php echo $_smarty_tpl->getValue('input');?>
+                  <input type="text" class="form-control" id="input" name="input" placeholder="Liczba" value="<?php echo $_smarty_tpl->getValue('form')->input;?>
 ">
                   </div>
                   <div class="form-group col-lg-3">
@@ -148,7 +148,7 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
   <section class="about_section layout_padding">
     <div class="container" id="wyniki">
         <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_214719317167e255844a84f6_85861462', 'content');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_209443933967e267472b3e02_73969326', 'content');
 ?>
 
     </div>
@@ -161,7 +161,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_214719317167e
       <p>
         &copy; <span id="displayYear"></span> 
         <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_34853967e25584586d78_63476175', 'footer');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_114990871467e267472b72f2_99753683', 'footer');
 ?>
 </br>
         <a href="https://html.design/">Free Html Templates</a>
@@ -188,20 +188,20 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_34853967e2558
 
 </html><?php }
 /* {block 'content'} */
-class Block_214719317167e255844a84f6_85861462 extends \Smarty\Runtime\Block
+class Block_209443933967e267472b3e02_73969326 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\templates';
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_04\\templates';
 ?>
  Domyślna treść zawartości .... <?php
 }
 }
 /* {/block 'content'} */
 /* {block 'footer'} */
-class Block_34853967e25584586d78_63476175 extends \Smarty\Runtime\Block
+class Block_114990871467e267472b72f2_99753683 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\templates';
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_04\\templates';
 ?>
  Domyślna treść stopki .... <?php
 }

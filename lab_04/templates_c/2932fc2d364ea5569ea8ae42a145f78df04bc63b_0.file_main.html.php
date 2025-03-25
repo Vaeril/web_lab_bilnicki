@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.2, created on 2025-03-25 08:04:36
+/* Smarty version 5.4.2, created on 2025-03-18 12:45:34
   from 'file:C:\xampp\htdocs\web_lab_bilnicki\lab_03_smarty\app\../templates/main.html' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.2',
-  'unifunc' => 'content_67e25584587584_75317978',
+  'unifunc' => 'content_67d95cde375b10_36176603',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    'f9ebfafc5e0501460f95bfaeefb46f798edb83e1' => 
+    '2932fc2d364ea5569ea8ae42a145f78df04bc63b' => 
     array (
       0 => 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\app\\../templates/main.html',
-      1 => 1742885896,
+      1 => 1742298326,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_67e25584587584_75317978 (\Smarty\Template $_smarty_tpl) {
+function content_67d95cde375b10_36176603 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 ?>
@@ -148,7 +148,7 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
   <section class="about_section layout_padding">
     <div class="container" id="wyniki">
         <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_214719317167e255844a84f6_85861462', 'content');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_38838219167d95cde36e647_94864645', 'content');
 ?>
 
     </div>
@@ -161,7 +161,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_214719317167e
       <p>
         &copy; <span id="displayYear"></span> 
         <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_34853967e25584586d78_63476175', 'footer');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_95620826667d95cde374a15_21368941', 'footer');
 ?>
 </br>
         <a href="https://html.design/">Free Html Templates</a>
@@ -188,7 +188,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_34853967e2558
 
 </html><?php }
 /* {block 'content'} */
-class Block_214719317167e255844a84f6_85861462 extends \Smarty\Runtime\Block
+class Block_38838219167d95cde36e647_94864645 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\templates';
@@ -198,7 +198,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\temp
 }
 /* {/block 'content'} */
 /* {block 'footer'} */
-class Block_34853967e25584586d78_63476175 extends \Smarty\Runtime\Block
+class Block_95620826667d95cde374a15_21368941 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\templates';

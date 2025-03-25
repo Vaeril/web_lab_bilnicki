@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.2, created on 2025-03-25 08:04:36
-  from 'file:C:\xampp\htdocs\web_lab_bilnicki\lab_03_smarty\app\../templates/main.html' */
+/* Smarty version 5.4.2, created on 2025-03-25 09:30:36
+  from 'file:C:\xampp\htdocs\web_lab_bilnicki\lab_04\app\converter\../../templates/main.html' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.2',
-  'unifunc' => 'content_67e25584587584_75317978',
+  'unifunc' => 'content_67e269acbfefe2_68817694',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    'f9ebfafc5e0501460f95bfaeefb46f798edb83e1' => 
+    '092b2c43661b52ee9ef7f9b43ad8e8b1cb5f8caa' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\app\\../templates/main.html',
-      1 => 1742885896,
+      0 => 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_04\\app\\converter\\../../templates/main.html',
+      1 => 1742891417,
       2 => 'file',
     ),
   ),
@@ -20,8 +20,8 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_67e25584587584_75317978 (\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\templates';
+function content_67e269acbfefe2_68817694 (\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_04\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 ?>
 <!DOCTYPE html>
@@ -42,23 +42,23 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 
 
   <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="<?php echo $_smarty_tpl->getValue('app_url');?>
+  <link rel="stylesheet" type="text/css" href="<?php echo $_smarty_tpl->getValue('config')->app_url;?>
 /css/bootstrap.css" />
 
   <!-- fonts style -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
 
   <!-- font awesome style -->
-  <link href="<?php echo $_smarty_tpl->getValue('app_url');?>
+  <link href="<?php echo $_smarty_tpl->getValue('config')->app_url;?>
 /css/font-awesome.min.css" rel="stylesheet" />
   <!-- nice select -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha256-mLBIhmBvigTFWPSCtvdu6a76T+3Xyt+K571hupeFLg4=" crossorigin="anonymous" />
 
   <!-- Custom styles for this template -->
-  <link href="<?php echo $_smarty_tpl->getValue('app_url');?>
+  <link href="<?php echo $_smarty_tpl->getValue('config')->app_url;?>
 /css/style.css" rel="stylesheet" />
   <!-- responsive style -->
-  <link href="<?php echo $_smarty_tpl->getValue('app_url');?>
+  <link href="<?php echo $_smarty_tpl->getValue('config')->app_url;?>
 /css/responsive.css" rel="stylesheet" />
 
 </head>
@@ -91,53 +91,10 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
     <!-- slider section -->
     <section class="slider_section ">
       <div class="container ">
-        <div class="row">
-          <div class="col-lg-7 col-md-8 mx-auto">
-            <div class="detail-box">
-              <h1>
-                Konwerter
-              </h1>
-              <p>
-                użyj tego konwertera, aby znaleźć odpowiedniki liczb w systemie binarnym, dziesiętnym i szestnastkowym
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="find_container ">
-          <div class="container">
-            <form action="<?php echo $_smarty_tpl->getValue('app_url');?>
-/app/converter.php#wyniki" method="post">
-              <div class="row">
-              <div class="col">
-                <div class="form-row ">
-                  <div class="form-group col-lg-3">
-                  <input type="text" class="form-control" id="input" name="input" placeholder="Liczba" value="<?php echo $_smarty_tpl->getValue('input');?>
-">
-                  </div>
-                  <div class="form-group col-lg-3">
-                  <select name="input_type" class="form-control wide" id="input_type">
-                    <option value="2">System binarny </option>
-                    <option value="10">System dziesiętny</option>
-                    <option value="16">System szestnastkowy</option>
-                  </select>
-                  </div>
-                </div>
-              </div>
-              </div>
-              <div class="row">
-              <div class="col">
-                <div class="form-row ">
-                  <div class="form-group col-lg-3">
-                  <div class="btn-box">
-                    <button type="submit" class="btn ">Licz</button>
-                  </div>
-                  </div>
-                </div>
-              </div>
-              </div>
-            </form>
-          </div>
-        </div>
+        <?php 
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_156654039267e269acbfdcb1_12745639', 'slider');
+?>
+
       </div>
     </section>
     <!-- end slider section -->
@@ -148,7 +105,7 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
   <section class="about_section layout_padding">
     <div class="container" id="wyniki">
         <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_214719317167e255844a84f6_85861462', 'content');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_94596422667e269acbfe465_01580131', 'content');
 ?>
 
     </div>
@@ -161,7 +118,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_214719317167e
       <p>
         &copy; <span id="displayYear"></span> 
         <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_34853967e25584586d78_63476175', 'footer');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_92310302367e269acbfea52_67958028', 'footer');
 ?>
 </br>
         <a href="https://html.design/">Free Html Templates</a>
@@ -187,21 +144,31 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_34853967e2558
 </body>
 
 </html><?php }
-/* {block 'content'} */
-class Block_214719317167e255844a84f6_85861462 extends \Smarty\Runtime\Block
+/* {block 'slider'} */
+class Block_156654039267e269acbfdcb1_12745639 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\templates';
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_04\\templates';
+?>
+ <?php
+}
+}
+/* {/block 'slider'} */
+/* {block 'content'} */
+class Block_94596422667e269acbfe465_01580131 extends \Smarty\Runtime\Block
+{
+public function callBlock(\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_04\\templates';
 ?>
  Domyślna treść zawartości .... <?php
 }
 }
 /* {/block 'content'} */
 /* {block 'footer'} */
-class Block_34853967e25584586d78_63476175 extends \Smarty\Runtime\Block
+class Block_92310302367e269acbfea52_67958028 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_03_smarty\\templates';
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_04\\templates';
 ?>
  Domyślna treść stopki .... <?php
 }
