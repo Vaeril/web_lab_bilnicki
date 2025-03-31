@@ -21,8 +21,8 @@ function &getSmarty() {
         $smarty->assign('config', getConfig());
         $smarty->assign('messages', getMessages());
         $smarty->setTemplateDir(array(
-            'one' => getConfig()->root_path.'app/views',
-            'two' => getConfig()->root_path.'app/views/templates'));
+            'one' => getConfig()->root_path.'/app/views',
+            'two' => getConfig()->root_path.'/app/views/templates'));
     }
     return $smarty;
 }

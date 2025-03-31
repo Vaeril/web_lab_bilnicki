@@ -34,7 +34,7 @@ class ConverterCtrl{
         getSmarty()->assign('form',$this->form);
         
         // 4. Wywołanie widoku z przekazaniem zmiennych
-        getSmarty()->display(getConfig()->root_path.'/app/converter/converter.html');
+        getSmarty()->display('converter.html');
     }
 
     // 1. pobranie parametrów
