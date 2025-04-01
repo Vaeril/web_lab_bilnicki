@@ -1,4 +1,4 @@
-{extends file="main.html"}
+{extends file="main.tpl"}
 
 {block name=footer}All Rights Reserved by Maciej Bilnicki{/block}
 

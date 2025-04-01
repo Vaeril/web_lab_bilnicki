@@ -34,13 +34,13 @@ class ConverterCtrl{
         getSmarty()->assign('form',$this->form);
         
         // 4. Wywołanie widoku z przekazaniem zmiennych
-        getSmarty()->display('converter.html');
+        getSmarty()->display('converter.tpl');
     }
 
     // 1. pobranie parametrów
     function getParams(){
-        $this->form->input = isset($_REQUEST['input']) ? $_REQUEST['input'] : null;
-        $this->form->input_type = isset($_REQUEST['input_type']) ? $_REQUEST['input_type'] : null;
+        $this->form->input = getFromRequest('input');
+        $this->form->input_type = getFromRequest('input_type');
     }
 
     // 2. walidacja parametrów z przygotowaniem zmiennych dla widoku

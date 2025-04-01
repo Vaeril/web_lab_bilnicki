@@ -8,9 +8,9 @@ function &getConfig(){ global $config; return $config; }
 
 //załaduj definicję klasy Messages i stwórz obiekt
 require_once 'core/Messages.class.php';
-$msgs = new core\Messages();
+$messages = new core\Messages();
 
-function &getMessages(){ global $msgs; return $msgs; }
+function &getMessages(){ global $messages; return $messages; }
 
 //przygotuj Smarty, twórz tylko raz - wtedy kiedy potrzeba
 $smarty = null;	
@@ -22,7 +22,7 @@ function &getSmarty(){
 		$smarty = new Smarty\Smarty();	
 		//przypisz konfigurację i messages
 		$smarty->assign('config',getConfig());
-		$smarty->assign('msgs',getMessages());
+		$smarty->assign('messages',getMessages());
 		//zdefiniuj lokalizację widoków (aby nie podawać ścieżek przy odwoływaniu do nich)
 		$smarty->setTemplateDir(array(
 			'one' => getConfig()->root_path.'/app/views',
