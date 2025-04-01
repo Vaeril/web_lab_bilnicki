@@ -1,4 +1,4 @@
-<?php namespace core;
+<?php   namespace core;
 class Messages {
     public $messages = array ();
     public $infos = array ();

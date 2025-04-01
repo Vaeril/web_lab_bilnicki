@@ -1,4 +1,4 @@
-<?php namespace app\transfer;
+<?php   namespace app\transfer;
 class ConverterResult{
     public $results = array();
 
