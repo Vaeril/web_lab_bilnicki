@@ -1,15 +1,15 @@
 <?php
-/* Smarty version 5.4.2, created on 2025-04-15 12:58:31
+/* Smarty version 5.4.2, created on 2025-04-15 14:08:19
   from 'file:login.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.2',
-  'unifunc' => 'content_67fe3bd72f3c43_04621972',
+  'unifunc' => 'content_67fe4c33ee8912_03914708',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    'b4d879e7ba3caac86bdfdab3e40767c9780364c4' => 
+    'c8140537cd539b5c79fef227d91ed69f4af16ed8' => 
     array (
       0 => 'login.tpl',
       1 => 1744713104,
@@ -20,41 +20,41 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_67fe3bd72f3c43_04621972 (\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_06_control\\app\\views';
+function content_67fe4c33ee8912_03914708 (\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_06_routing\\app\\views';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_123480922767fe3bd72dbe31_10257093', 'footer');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_62630963567fe4c33bfbca5_99127587', 'footer');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_172828016067fe3bd72e1146_77207339', 'content');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_154869623767fe4c33cd7472_16869076', 'content');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_185484534867fe3bd72e2134_34781700', 'slider');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_120564017867fe4c33cd8491_69971779', 'slider');
 $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, "main.tpl", $_smarty_current_dir);
 }
 /* {block 'footer'} */
-class Block_123480922767fe3bd72dbe31_10257093 extends \Smarty\Runtime\Block
+class Block_62630963567fe4c33bfbca5_99127587 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_06_control\\app\\views';
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_06_routing\\app\\views';
 ?>
 All Rights Reserved by Maciej Bilnicki<?php
 }
 }
 /* {/block 'footer'} */
 /* {block 'content'} */
-class Block_172828016067fe3bd72e1146_77207339 extends \Smarty\Runtime\Block
+class Block_154869623767fe4c33cd7472_16869076 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_06_control\\app\\views';
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_06_routing\\app\\views';
 ?>
 
 <?php
@@ -62,10 +62,10 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_06_control\\app
 }
 /* {/block 'content'} */
 /* {block 'slider'} */
-class Block_185484534867fe3bd72e2134_34781700 extends \Smarty\Runtime\Block
+class Block_120564017867fe4c33cd8491_69971779 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_06_control\\app\\views';
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\lab_06_routing\\app\\views';
 ?>
 
 
