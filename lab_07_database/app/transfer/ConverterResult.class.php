@@ -1,7 +1,7 @@
 <?php   namespace app\transfer;
 class ConverterResult{
     public $results = array();
-    public $lastResult;
+    public $lastResult = array();
 
     public function isEmpty() {
         return !(isset($this->results)) || count($this->results) == 0;

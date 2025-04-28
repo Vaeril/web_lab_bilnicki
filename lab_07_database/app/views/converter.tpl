@@ -41,10 +41,11 @@
                       <p>
                         Liczba szestnastkowa: {$result->results[2]}
                       </p>
+            
 
-                      {if isset($result->lastresult)}
+                      {if isset($result->lastResult)}
                         <p>
-                        Ostatni wynik: {$result->lastResult[binaryResult]}, {$result->lastResult[decimalResult]}, {$result->lastResult[hexResult]}
+                        Ostatni wynik: {$result->lastResult['binaryResult']}, {$result->lastResult['decimalResult']}, {$result->lastResult['hexResult']}
                         </p>
                       {/if}
 
