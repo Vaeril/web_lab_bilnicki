@@ -1,0 +1,61 @@
+- Aplikacja do tworzenia notatek
+- Każdy z użytkowników ma swoje notatki
+- Użytkownicy mogą tworzyć kategorie do swoich  notatek
+- Manager może tworzyć grupy użytkowników, w ramach których są wspólne notatki
+
+Baza danych, tabele:
+- użytkownicy
+- grupy i ich skład
+- notatki w bazie
+- kategorie utworzone przez użytkownika/grupę
+
+Notatka:
+- id
+- tytuł
+- treść
+- właściciel (użytkownik lub grupa)
+- czy to notatka grupowa
+- kategoria
+(- data utworzenia)
+(- data ostatniej modyfikacji)
+(- odwołania do innych notatek)
+
+Użytkownik:
+- id
+- mail = login
+- hasło
+- rola (user/manager/admin)
+
+Grupa:
+- id
+- nazwa
+- właściciel (użytkownik)
+- członek1
+- członek2
+- członek3
+- członek4
+- członek5
+
+Kategoria:
+- id
+- nazwa
+- kolor
+- właściciel
+
+Szkic akcji:
+- wyświetlenie własnych notatek
+- wyświetlenie grup, do których należy użytkownik
+- wyświetlenie notatek grupowych
+- utworzenie notatki
+- modyfikacja notatki = wyświetlenie notatki
+- przeniesienie notatki z prywatnych do grupy
+- skopiowanie notatki z grupy do prywatnych
+- logowanie
+- wylogowanie
+- rejestracja użytkownika
+- utworzenie nowej kategorii
+- modyfikacja nazwy kategorii
+- (admin + manager) wyświetlenie wszystkich notatek
+- (admin) wyświetlenie wszystkich użytkowników
+- utworzenie grupy
+- modyfikacja grupy
