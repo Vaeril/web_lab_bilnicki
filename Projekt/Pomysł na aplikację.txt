@@ -42,6 +42,11 @@ Kategoria:
 - kolor
 - właściciel
 
+groups_has_user:
+- id user
+- id group
+-> jak to działa, nie mam pojęcia?
+
 Szkic akcji:
 - wyświetlenie własnych notatek
 - wyświetlenie grup, do których należy użytkownik
