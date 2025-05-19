@@ -11,21 +11,22 @@ use core\SessionUtils;
 SessionUtils::loadMessages();
 
 
-App::getRouter()->setDefaultRoute('hello'); #default action
-//App::getRouter()->setLoginRoute('login'); #action to forward if no permissions
+App::getRouter()->setDefaultRoute('redirect'); #default action
+App::getRouter()->setLoginRoute('login'); #action to forward if no permissions
 
 Utils::addRoute('hello', 'HelloCtrl');
 Utils::addRoute('test', 'TestCtrl');
 
 Utils::addRoute('register', 'LoginCtrl');
 Utils::addRoute('login', 'LoginCtrl');
-//Utils::addRoute('logout', 'LoginCtrl', ['user', 'admin']);
+Utils::addRoute('logout', 'LoginCtrl', ['user', 'admin']);
+Utils::addRoute('redirect', 'LoginCtrl', ['user', 'admin']);
 
         // for users - managing notes
-//Utils::addRoute('notesList', 'NotesCtrl', 'user');
+Utils::addRoute('notesList', 'NotesCtrl', 'user');
 //Utils::addRoute('filterNotes', 'NotesCtrl', 'user');
 //Utils::addRoute('editNote', 'NotesCtrl', 'user');
-//Utils::addRoute('addNote', 'NotesCtrl', 'user');
+Utils::addRoute('addNote', 'NotesCtrl', 'user');
 //Utils::addRoute('deleteNote', 'NotesCtrl', 'user');
 
         // for users - managing categories

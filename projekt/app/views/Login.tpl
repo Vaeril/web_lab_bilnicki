@@ -1,7 +1,7 @@
 {extends file="main.tpl"}
 
 {block name=main_body}
-				<form action="{$conf->action_url}register" method="POST">
+				<form action="{$conf->action_url}login" method="POST">
 					<div class="subscribe-title text-center">
 						<h2>
 							LOGIN

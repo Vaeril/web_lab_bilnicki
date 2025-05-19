@@ -72,11 +72,21 @@
 			            <!-- Collect the nav links, forms, and other content for toggling -->
 			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
 			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-			                    <li class=" scroll active"><a href="#">return</a></li>
-			                    <li class="scroll"><a href="#">my groups</a></li>
-			                    <li class="scroll"><a href="#">register</a></li>
-			                    <li class="scroll"><a href="#">log in</a></li>
-			                    <li class="scroll"><a href="#">log out</a></li>
+								{if (\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))}
+			                    <li><a href="#">return</a></li>
+								{/if}
+								{if \core\RoleUtils::inRole("user")}
+			                    <li><a href="{$conf->action_url}groupsList">my groups</a></li>
+								{/if}
+								{if !(\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))}
+			                    <li><a href="{$conf->action_url}register">register</a></li>
+								{/if}
+								{if !(\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))}
+			                    <li><a href="{$conf->action_url}login">log in</a></li>
+								{/if}
+								{if (\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))}
+			                    <li><a href="{$conf->action_url}logout">log out</a></li>
+								{/if}
 			                </ul><!--/.nav -->
 			            </div><!-- /.navbar-collapse -->
 			        </div><!--/.container-->

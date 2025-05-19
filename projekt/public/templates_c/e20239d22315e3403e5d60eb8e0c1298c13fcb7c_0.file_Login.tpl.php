@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-19 12:36:36
+/* Smarty version 5.4.5, created on 2025-05-19 13:22:32
   from 'file:Login.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_682b09b43a2aa3_29336651',
+  'unifunc' => 'content_682b1478e70703_66697647',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'e20239d22315e3403e5d60eb8e0c1298c13fcb7c' => 
     array (
       0 => 'Login.tpl',
-      1 => 1747650994,
+      1 => 1747653749,
       2 => 'file',
     ),
   ),
@@ -21,32 +21,32 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:messages.tpl' => 1,
   ),
 ))) {
-function content_682b09b43a2aa3_29336651 (\Smarty\Template $_smarty_tpl) {
+function content_682b1478e70703_66697647 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1307137915682b09b4396e30_54288288', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1140771318682b1478e63c37_70691898', 'main_body');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_2051447918682b09b439e9f7_96766855', "messages");
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1332627626682b1478e6c612_20711614', "messages");
 ?>
 
 <?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, "main.tpl", $_smarty_current_dir);
 }
 /* {block 'main_body'} */
-class Block_1307137915682b09b4396e30_54288288 extends \Smarty\Runtime\Block
+class Block_1140771318682b1478e63c37_70691898 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 ?>
 
 				<form action="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-register" method="POST">
+login" method="POST">
 					<div class="subscribe-title text-center">
 						<h2>
 							LOGIN
@@ -86,7 +86,7 @@ register" method="POST">
 }
 /* {/block 'main_body'} */
 /* {block "messages"} */
-class Block_2051447918682b09b439e9f7_96766855 extends \Smarty\Runtime\Block
+class Block_1332627626682b1478e6c612_20711614 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';

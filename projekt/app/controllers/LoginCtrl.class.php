@@ -29,30 +29,35 @@ class LoginCtrl {
   }
 
   public function action_login() {
-    
-    $this->loginForm = new LoginForm();
-            App::getSmarty()->assign("loginForm", $this->loginForm);
+    if($this->validateLogin()){
+        $this->proceedAfterLogin();
+    } else {
+        App::getSmarty()->assign("loginForm", $this->loginForm);
         App::getSmarty()->display("Login.tpl");
+    }
   }
 
   // Register
 
   function validateRegister() {
-    App::getMessages()->clear();
 
     $this->registerForm = new RegisterForm();
     $v = new Validator();
+
+    // Did user even provided some mail?
+    $this->registerForm->email = $v->validateFromRequest("email", ["required" => true]);
+    if($v->isLastOK() == false){
+        App::getMessages()->clear();
+        return false;
+    }
+    App::getMessages()->clear();
+
     $this->registerForm->email = $v->validateFromRequest("email", 
     ["trim" => true,
             "required" => true,
             "required_message" => 'Email is necessary',
             "email" => true,
             "validator_message" => "Use proper email adress"]);
-    
-            /*
-    if($v->isLastOK() == false){
-        return false;
-    }*/
 
     $database_user = App::getDB()->select("users", "*", ["mail" => $this->registerForm->email]);
     if(count($database_user) > 0){
@@ -67,19 +72,7 @@ class LoginCtrl {
 
     $this->registerForm->password_2 = $v->validateFromRequest("password_2",
             ["required" => true,
-            "required_message" => 'Password confirmation is necessary',
-            "min_length" => 4,
-            "validator_message" => "Password should have at least 4 characters"]);
-
-            
-    if(!($v->isLastOK())){
-
-        if(App::getMessages()->getNumberOfErrors() == 3){
-            App::getMessages()->clear();
-            return false;
-        }
-    }
-
+            "required_message" => 'Password confirmation is necessary']);
 
     if($this->registerForm->password != $this->registerForm->password_2){
         $m = new Message("Passwords must match", "error");
@@ -89,9 +82,6 @@ class LoginCtrl {
     }
     
     if(!($v->isLastOK())){
-
-        if(App::getMessages()->getNumberOfErrors() == 3)
-
         return false;
     }
 
@@ -121,23 +111,86 @@ class LoginCtrl {
   function redirectToLoginFromRegister(){
         $m = new Message("You are already registered", "error");
         App::getMessages()->addMessage($m);
+        
+        $this->loginForm = new LoginForm();
+        $this->loginForm->email = $this->registerForm->email;
+        App::getSmarty()->assign("loginForm", $this->loginForm);
         App::getRouter()->redirectTo("login");
   }
 
   // Login
 
   function validateLogin() {
-    App::getMessages()->clear();
     $this->loginForm = new LoginForm();
     $v = new Validator();
+    
+    $this->loginForm->email = $v->validateFromRequest("email", ["required" => true]);
+    if($v->isLastOK() == false){
+        App::getMessages()->clear();
+        return false;
+    }
 
+    App::getMessages()->clear();
+    $this->loginForm->email = $v->validateFromRequest("email", 
+    ["trim" => true,
+            "required" => true,
+            "required_message" => 'Provide email']);
+            
+    if(!($v->isLastOK())){
+        return false;
+    }
+
+    $database_user = App::getDB()->select("users", "*", ["mail" => $this->loginForm->email]);
+    if(count($database_user) == 0){
+        $m = new Message("There is no such user", "error");
+        App::getMessages()->addMessage($m);
+        return false;
+    }
+
+    $this->loginForm->password = $v->validateFromRequest("password",
+            ["required" => true,
+            "required_message" => 'Provide password']);
+            
+    
+    if(!($v->isLastOK())){
+        return false;
+    }
+
+
+    $database_user = App::getDB()->select("users", "*", ["mail" => $this->loginForm->email, "password" => $this->loginForm->password]);
+    if(count($database_user) == 0){
+        $m = new Message("Password incorrect", "error");
+        App::getMessages()->addMessage($m);
+        return false;
+    } else {
+        foreach($database_user as $user){
+            $this->loginForm->role = $user["role"];
+        }
+    }
+    return true;
   }
 
   function proceedAfterLogin() {
         SessionUtils::store("email", $this->loginForm->email);
         RoleUtils::addRole($this->loginForm->role);
 
-        App::getRouter()->redirectTo("hello");
+        $this->action_redirect();
   }
 
+  // logout
+
+  function action_logout(){
+    session_destroy();
+    App::getRouter()->redirectTo("login");
+  }
+
+  // redirect
+
+  function action_redirect(){
+        if(RoleUtils::inRole("user")){
+            App::getRouter()->redirectTo("notesList");
+        } else {
+            App::getRouter()->redirectTo("hello");
+        }
+  }
 }

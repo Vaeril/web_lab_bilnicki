@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-19 11:21:22
+/* Smarty version 5.4.5, created on 2025-05-19 13:54:05
   from 'file:main.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_682af81230a7c5_55936782',
+  'unifunc' => 'content_682b1bdd663058_24784334',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd645efda29af69fed07f7f4406cbcfa5986f4bad' => 
     array (
       0 => 'main.tpl',
-      1 => 1747646469,
+      1 => 1747655632,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_682af81230a7c5_55936782 (\Smarty\Template $_smarty_tpl) {
+function content_682b1bdd663058_24784334 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 ?>
@@ -113,11 +113,25 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 			            <!-- Collect the nav links, forms, and other content for toggling -->
 			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
 			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-			                    <li class=" scroll active"><a href="#">return</a></li>
-			                    <li class="scroll"><a href="#">my groups</a></li>
-			                    <li class="scroll"><a href="#">register</a></li>
-			                    <li class="scroll"><a href="#">log in</a></li>
-			                    <li class="scroll"><a href="#">log out</a></li>
+								<?php if ((\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))) {?>
+			                    <li><a href="#">return</a></li>
+								<?php }?>
+								<?php if (\core\RoleUtils::inRole("user")) {?>
+			                    <li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+groupsList">my groups</a></li>
+								<?php }?>
+								<?php if (!(\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))) {?>
+			                    <li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+register">register</a></li>
+								<?php }?>
+								<?php if (!(\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))) {?>
+			                    <li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+login">log in</a></li>
+								<?php }?>
+								<?php if ((\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))) {?>
+			                    <li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+logout">log out</a></li>
+								<?php }?>
 			                </ul><!--/.nav -->
 			            </div><!-- /.navbar-collapse -->
 			        </div><!--/.container-->
@@ -133,7 +147,7 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 
 		<!--welcome-hero start -->
                 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_539876844682af8122fb508_52121028', 'welcome_hero');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1076333637682b1bdd653816_42389367', 'welcome_hero');
 ?>
 
                 <!--/.welcome-hero-->
@@ -143,7 +157,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_539876844682a
 		<section id="explore" class="explore">
 			<div class="container">
                 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_785005791682af812300277_58466948', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_801740774682b1bdd658678_02193155', 'main_body');
 ?>
 
 			</div><!--/.container-->
@@ -155,7 +169,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_785005791682a
 		<section id="messages" class="explore">
 		<div class="container">
 			<?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_2134463358682af812301739_24403891', 'messages');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_308305578682b1bdd659b10_63849350', 'messages');
 ?>
 
 		</div>
@@ -257,7 +271,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_2134463358682
 	
 </html><?php }
 /* {block 'welcome_hero'} */
-class Block_539876844682af8122fb508_52121028 extends \Smarty\Runtime\Block
+class Block_1076333637682b1bdd653816_42389367 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -267,7 +281,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'welcome_hero'} */
 /* {block 'main_body'} */
-class Block_785005791682af812300277_58466948 extends \Smarty\Runtime\Block
+class Block_801740774682b1bdd658678_02193155 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -277,7 +291,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'main_body'} */
 /* {block 'messages'} */
-class Block_2134463358682af812301739_24403891 extends \Smarty\Runtime\Block
+class Block_308305578682b1bdd659b10_63849350 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
