@@ -88,6 +88,8 @@
 		</section><!-- /.top-area-->
 		<!-- top-area End -->
 
+		<div id="top"></div>
+
 		<!--welcome-hero start -->
                 {block name = welcome_hero} {/block}
                 <!--/.welcome-hero-->
@@ -102,6 +104,13 @@
 		</section><!--/.explore-->
 		<!--explore end -->
 
+
+		<section id="messages" class="explore">
+		<div class="container">
+			{block name = messages} {/block}
+		</div>
+		</section>
+
 		<!--footer start-->
 		<footer id="footer"  class="footer">
 			<div class="container">
@@ -111,7 +120,7 @@
 			           	</div>
 			           	<div class="col-sm-9">
 			           		<ul class="footer-menu-item">
-			                    <li class="scroll"><a href="#">return</a></li>
+			                    <li class="scroll"><a href="#top">return to top</a></li>
 			                </ul><!--/.nav -->
 			           	</div>
 		           </div>

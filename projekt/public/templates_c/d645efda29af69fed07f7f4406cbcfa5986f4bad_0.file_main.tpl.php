@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-13 11:26:03
+/* Smarty version 5.4.5, created on 2025-05-19 11:21:22
   from 'file:main.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6823102b719357_17476061',
+  'unifunc' => 'content_682af81230a7c5_55936782',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd645efda29af69fed07f7f4406cbcfa5986f4bad' => 
     array (
       0 => 'main.tpl',
-      1 => 1747128361,
+      1 => 1747646469,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6823102b719357_17476061 (\Smarty\Template $_smarty_tpl) {
+function content_682af81230a7c5_55936782 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 ?>
@@ -129,9 +129,11 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 		</section><!-- /.top-area-->
 		<!-- top-area End -->
 
+		<div id="top"></div>
+
 		<!--welcome-hero start -->
                 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_9331614266823102b70b302_18024805', 'welcome_hero');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_539876844682af8122fb508_52121028', 'welcome_hero');
 ?>
 
                 <!--/.welcome-hero-->
@@ -141,13 +143,23 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_9331614266823
 		<section id="explore" class="explore">
 			<div class="container">
                 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_8785888396823102b7103c7_53966930', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_785005791682af812300277_58466948', 'main_body');
 ?>
 
 			</div><!--/.container-->
 
 		</section><!--/.explore-->
 		<!--explore end -->
+
+
+		<section id="messages" class="explore">
+		<div class="container">
+			<?php 
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_2134463358682af812301739_24403891', 'messages');
+?>
+
+		</div>
+		</section>
 
 		<!--footer start-->
 		<footer id="footer"  class="footer">
@@ -158,7 +170,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_8785888396823
 			           	</div>
 			           	<div class="col-sm-9">
 			           		<ul class="footer-menu-item">
-			                    <li class="scroll"><a href="#">return</a></li>
+			                    <li class="scroll"><a href="#top">return to top</a></li>
 			                </ul><!--/.nav -->
 			           	</div>
 		           </div>
@@ -245,7 +257,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_8785888396823
 	
 </html><?php }
 /* {block 'welcome_hero'} */
-class Block_9331614266823102b70b302_18024805 extends \Smarty\Runtime\Block
+class Block_539876844682af8122fb508_52121028 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -255,7 +267,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'welcome_hero'} */
 /* {block 'main_body'} */
-class Block_8785888396823102b7103c7_53966930 extends \Smarty\Runtime\Block
+class Block_785005791682af812300277_58466948 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -264,4 +276,14 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 }
 /* {/block 'main_body'} */
+/* {block 'messages'} */
+class Block_2134463358682af812301739_24403891 extends \Smarty\Runtime\Block
+{
+public function callBlock(\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
+?>
+ <?php
+}
+}
+/* {/block 'messages'} */
 }

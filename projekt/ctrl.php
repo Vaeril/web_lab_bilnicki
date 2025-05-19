@@ -17,8 +17,8 @@ App::getRouter()->setDefaultRoute('hello'); #default action
 Utils::addRoute('hello', 'HelloCtrl');
 Utils::addRoute('test', 'TestCtrl');
 
-//Utils::addRoute('register', 'LoginCtrl');
-//Utils::addRoute('login', 'LoginCtrl');
+Utils::addRoute('register', 'LoginCtrl');
+Utils::addRoute('login', 'LoginCtrl');
 //Utils::addRoute('logout', 'LoginCtrl', ['user', 'admin']);
 
         // for users - managing notes
