@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-19 13:54:05
+/* Smarty version 5.4.5, created on 2025-05-20 10:39:48
   from 'file:main.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_682b1bdd663058_24784334',
+  'unifunc' => 'content_682c3fd4581435_54585327',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd645efda29af69fed07f7f4406cbcfa5986f4bad' => 
     array (
       0 => 'main.tpl',
-      1 => 1747655632,
+      1 => 1747730386,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_682b1bdd663058_24784334 (\Smarty\Template $_smarty_tpl) {
+function content_682c3fd4581435_54585327 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 ?>
@@ -114,7 +114,10 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
 			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
 								<?php if ((\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))) {?>
-			                    <li><a href="#">return</a></li>
+			                    <li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1332293084682c3fd455f262_19705218', 'return_action');
+?>
+}">return</a></li>
 								<?php }?>
 								<?php if (\core\RoleUtils::inRole("user")) {?>
 			                    <li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
@@ -147,7 +150,7 @@ logout">log out</a></li>
 
 		<!--welcome-hero start -->
                 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1076333637682b1bdd653816_42389367', 'welcome_hero');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1208886368682c3fd4574d47_81568353', 'welcome_hero');
 ?>
 
                 <!--/.welcome-hero-->
@@ -157,7 +160,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1076333637682
 		<section id="explore" class="explore">
 			<div class="container">
                 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_801740774682b1bdd658678_02193155', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1925360874682c3fd45767e5_90050124', 'main_body');
 ?>
 
 			</div><!--/.container-->
@@ -169,7 +172,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_801740774682b
 		<section id="messages" class="explore">
 		<div class="container">
 			<?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_308305578682b1bdd659b10_63849350', 'messages');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1820683672682c3fd4577be4_52179059', 'messages');
 ?>
 
 		</div>
@@ -178,17 +181,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_308305578682b
 		<!--footer start-->
 		<footer id="footer"  class="footer">
 			<div class="container">
-				<div class="footer-menu">
-		           	<div class="row">
-			           	<div class="col-sm-3">
-			           	</div>
-			           	<div class="col-sm-9">
-			           		<ul class="footer-menu-item">
-			                    <li class="scroll"><a href="#top">return to top</a></li>
-			                </ul><!--/.nav -->
-			           	</div>
-		           </div>
-				</div>
+			
 				<div class="hm-footer-copyright">
 					<div class="row">
 						<div class="col-sm-5">
@@ -270,8 +263,18 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_308305578682b
     </body>
 	
 </html><?php }
+/* {block 'return_action'} */
+class Block_1332293084682c3fd455f262_19705218 extends \Smarty\Runtime\Block
+{
+public function callBlock(\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
+?>
+ <?php
+}
+}
+/* {/block 'return_action'} */
 /* {block 'welcome_hero'} */
-class Block_1076333637682b1bdd653816_42389367 extends \Smarty\Runtime\Block
+class Block_1208886368682c3fd4574d47_81568353 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -281,7 +284,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'welcome_hero'} */
 /* {block 'main_body'} */
-class Block_801740774682b1bdd658678_02193155 extends \Smarty\Runtime\Block
+class Block_1925360874682c3fd45767e5_90050124 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -291,7 +294,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'main_body'} */
 /* {block 'messages'} */
-class Block_308305578682b1bdd659b10_63849350 extends \Smarty\Runtime\Block
+class Block_1820683672682c3fd4577be4_52179059 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';

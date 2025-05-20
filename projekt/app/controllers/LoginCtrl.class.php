@@ -86,9 +86,10 @@ class LoginCtrl {
     }
 
     $this->registerForm->role = $v->validateFromRequest("role", [""]);
-    if($this->registerForm->role != "admin")
+    if($this->registerForm->role != "admin"){
         $this->registerForm->role = "user";
-
+    }
+    
     $this->loginForm = new LoginForm();
     $this->loginForm->email = $this->registerForm->email;
     $this->loginForm->role = $this->registerForm->role;
@@ -102,6 +103,11 @@ class LoginCtrl {
         "password" => $this->registerForm->password,
         "role" => $this->registerForm->role
         ]);
+        
+        $database_user = App::getDB()->select("users", "*", ["mail" => $this->registerForm->email]);
+        foreach($database_user as $user){
+            $this->loginForm->id = $database_user["id"];
+        }
   }
 
   function returnToRegister() {
@@ -165,6 +171,7 @@ class LoginCtrl {
     } else {
         foreach($database_user as $user){
             $this->loginForm->role = $user["role"];
+            $this->loginForm->id = $user["id"];
         }
     }
     return true;
@@ -172,6 +179,7 @@ class LoginCtrl {
 
   function proceedAfterLogin() {
         SessionUtils::store("email", $this->loginForm->email);
+        SessionUtils::store("id", $this->loginForm->id);
         RoleUtils::addRole($this->loginForm->role);
 
         $this->action_redirect();

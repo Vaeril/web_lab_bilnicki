@@ -1,5 +1,7 @@
 {extends file="main.tpl"}
 
+{block name=return_action}notesList{/block}
+
 {block name=main_body}
 				<form action="{$conf->action_url}addNote" method="POST">
 					<div class="row">
@@ -28,10 +30,12 @@
 											-moz-transition:0.3s linear;
 											-o-transition:0.3s linear;
 											transition:0.3s linear;">
-								<option value="volvo">Volvo</option>
-								<option value="saab">Saab</option>
-								<option value="opel">Opel</option>
-								<option value="audi">Audi</option>
+											
+								{foreach $categories as $r}
+								{strip}
+									<option value="{$r["id"]}">{$r["name"]}</option>
+								{/strip}
+								{/foreach}
 							</select>
 							</div>
 						</div>	

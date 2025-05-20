@@ -73,7 +73,7 @@
 			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
 			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
 								{if (\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))}
-			                    <li><a href="#">return</a></li>
+			                    <li><a href="{$conf->action_url}{block name = return_action} {/block}}">return</a></li>
 								{/if}
 								{if \core\RoleUtils::inRole("user")}
 			                    <li><a href="{$conf->action_url}groupsList">my groups</a></li>
@@ -124,17 +124,7 @@
 		<!--footer start-->
 		<footer id="footer"  class="footer">
 			<div class="container">
-				<div class="footer-menu">
-		           	<div class="row">
-			           	<div class="col-sm-3">
-			           	</div>
-			           	<div class="col-sm-9">
-			           		<ul class="footer-menu-item">
-			                    <li class="scroll"><a href="#top">return to top</a></li>
-			                </ul><!--/.nav -->
-			           	</div>
-		           </div>
-				</div>
+			
 				<div class="hm-footer-copyright">
 					<div class="row">
 						<div class="col-sm-5">

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-20 10:11:55
-  from 'file:AddNote.tpl' */
+/* Smarty version 5.4.5, created on 2025-05-20 10:05:53
+  from 'file:AddCategory.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_682c394bc34771_87690100',
+  'unifunc' => 'content_682c37e10ed500_02024127',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '5057ba9d8c8494cc52f63af733caa85dd9eb48db' => 
+    'ea83fd5f33d02f7778203743c4fd3fa504285e82' => 
     array (
-      0 => 'AddNote.tpl',
-      1 => 1747728704,
+      0 => 'AddCategory.tpl',
+      1 => 1747728343,
       2 => 'file',
     ),
   ),
@@ -21,51 +21,52 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:messages.tpl' => 1,
   ),
 ))) {
-function content_682c394bc34771_87690100 (\Smarty\Template $_smarty_tpl) {
+function content_682c37e10ed500_02024127 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_420801602682c394bc1e4d8_86102270', 'return_action');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_477140230682c37e10d1608_92213938', 'return_action');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1980277959682c394bc22d16_93767364', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_558915296682c37e10d6862_01201809', 'main_body');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_759478373682c394bc30ce2_68632239', "messages");
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1578828213682c37e10e9ad9_85969626', "messages");
 ?>
 
 <?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, "main.tpl", $_smarty_current_dir);
 }
 /* {block 'return_action'} */
-class Block_420801602682c394bc1e4d8_86102270 extends \Smarty\Runtime\Block
+class Block_477140230682c37e10d1608_92213938 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 ?>
-notesList<?php
+categoriesList<?php
 }
 }
 /* {/block 'return_action'} */
 /* {block 'main_body'} */
-class Block_1980277959682c394bc22d16_93767364 extends \Smarty\Runtime\Block
+class Block_558915296682c37e10d6862_01201809 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 ?>
 
 				<form action="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-addNote" method="POST">
+addCategory" method="POST">
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="subscription-input-group">
-								<input type="text" class="subscription-input-form" name="title" placeholder="Note title">
+								<input type="text" class="subscription-input-form" name="name" placeholder="Category name"  value="<?php echo $_smarty_tpl->getValue('categoryForm')->name;?>
+">
 							</div>
 						</div>	
 					</div>
@@ -73,10 +74,11 @@ addNote" method="POST">
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="subscription-input-group">
-							<select name="category" id="category"
+							<select name="color" id="color"
 								style = "display: inline-block;
 											width: 630px;
-											padding:30px;
+                                            padding: 15px;
+											padding-left:30px;
 											font-size: 16px;
 											color: #2d2f31;
 											-webkit-border-radius:3px;
@@ -88,19 +90,13 @@ addNote" method="POST">
 											-moz-transition:0.3s linear;
 											-o-transition:0.3s linear;
 											transition:0.3s linear;">
-											
-								<?php
-$_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('categories'), 'r');
-$foreach0DoElse = true;
-foreach ($_from ?? [] as $_smarty_tpl->getVariable('r')->value) {
-$foreach0DoElse = false;
-?>
-								<option value="<?php echo $_smarty_tpl->getValue('r')["id"];?>
-"><?php echo $_smarty_tpl->getValue('r')["name"];?>
-</option>
-								<?php
-}
-$_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
+								<option value="red" <?php if ($_smarty_tpl->getValue('categoryForm')->color == "red") {?>selected<?php }?>>Red</option>
+								<option value="green" <?php if ($_smarty_tpl->getValue('categoryForm')->color == "green") {?>selected<?php }?>>Green</option>
+								<option value="white" <?php if ($_smarty_tpl->getValue('categoryForm')->color == "white") {?>selected<?php }?>>White</option>
+								<option value="blue" <?php if ($_smarty_tpl->getValue('categoryForm')->color == "blue") {?>selected<?php }?>>Blue</option>
+								<option value="purple" <?php if ($_smarty_tpl->getValue('categoryForm')->color == "purple") {?>selected<?php }?>>Purple</option>
+								<option value="grey" <?php if ($_smarty_tpl->getValue('categoryForm')->color == "grey") {?>selected<?php }?>>Grey</option>
+								<option value="orange" <?php if ($_smarty_tpl->getValue('categoryForm')->color == "orange") {?>selected<?php }?>>Orange</option>
 							</select>
 							</div>
 						</div>	
@@ -109,30 +105,7 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="subscription-input-group">
-								<textarea name="text" rows="20" cols="50"
-								style = "display: inline-block;
-											width: 630px;
-											padding:30px;
-											font-size: 16px;
-											color: #2d2f31;
-											-webkit-border-radius:3px;
-											-moz-border-radius:3px;
-											border-radius:3px;
-											border:1px solid #fff;
-											box-shadow: 0 0px 10px rgba(21,19,19,.1);
-											-webkit-transition:0.3s linear;
-											-moz-transition:0.3s linear;
-											-o-transition:0.3s linear;
-											transition:0.3s linear;">Content</textarea>
-							</div>
-						</div>	
-					</div>
-					<div class="subscribe-title text-center"></div>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="subscription-input-group">
-								<button class="appsLand-btn subscribe-btn"><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-notesList">
+								<button class="appsLand-btn subscribe-btn" type="submit">
 									Create
 								</button>
 							</div>
@@ -145,7 +118,7 @@ notesList">
 }
 /* {/block 'main_body'} */
 /* {block "messages"} */
-class Block_759478373682c394bc30ce2_68632239 extends \Smarty\Runtime\Block
+class Block_1578828213682c37e10e9ad9_85969626 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';

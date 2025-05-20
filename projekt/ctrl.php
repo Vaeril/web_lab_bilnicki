@@ -31,9 +31,9 @@ Utils::addRoute('addNote', 'NotesCtrl', 'user');
 
         // for users - managing categories
 //Utils::addRoute('groupCategoriesList', 'CategoriesCtrl', 'user');
-//Utils::addRoute('categoriesList', 'CategoriesCtrl', 'user');
+Utils::addRoute('categoriesList', 'CategoriesCtrl', 'user');
 //Utils::addRoute('editCategory', 'CategoriesCtrl', 'user');
-//Utils::addRoute('addCategory', 'CategoriesCtrl', 'user');
+Utils::addRoute('addCategory', 'CategoriesCtrl', 'user');
 //Utils::addRoute('deleteCategory', 'CategoriesCtrl', 'user');
 
         // for users - managing groups
