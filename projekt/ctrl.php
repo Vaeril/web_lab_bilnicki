@@ -24,10 +24,10 @@ Utils::addRoute('redirect', 'LoginCtrl', ['user', 'admin']);
 
         // for users - managing notes
 Utils::addRoute('notesList', 'NotesCtrl', 'user');
-//Utils::addRoute('filterNotes', 'NotesCtrl', 'user');
-//Utils::addRoute('editNote', 'NotesCtrl', 'user');
+Utils::addRoute('editNote', 'NotesCtrl', 'user');
+Utils::addRoute('saveNote','NotesCtrl', 'user');
 Utils::addRoute('addNote', 'NotesCtrl', 'user');
-//Utils::addRoute('deleteNote', 'NotesCtrl', 'user');
+Utils::addRoute('deleteNote', 'NotesCtrl', 'user');
 
         // for users - managing categories
 //Utils::addRoute('groupCategoriesList', 'CategoriesCtrl', 'user');

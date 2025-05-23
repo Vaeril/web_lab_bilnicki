@@ -9,12 +9,26 @@
                 <div class="welcome-hero-form">
                     <div class="single-welcome-hero-form">
                         <h3>title</h3>
-                        <input type="text" name="title"/>
+                        <input type="text" name="title" value="{$searchForm->title}"/>
                     </div>
                     <div class="single-welcome-hero-form">
                         <h3>category</h3>
-                        <input type="text" name="category"/>
                     </div>
+                        <select name="category" id="category"
+								style = "position: relative;
+                                        display: flex;
+                                        align-items: center;
+                                        border: 0px blue;
+                                        padding-right: 30px;
+                                        padding-left: 30px;">
+											
+                                    <option value="-1">all categories</option>
+								{foreach $categories as $r}
+								{strip}
+									<option value="{$r["id"]}" {if ($r["id"] == $searchForm->category)}selected{/if}>{$r["name"]}</option>
+								{/strip}
+								{/foreach}
+							</select>
                     <div class="welcome-hero-serch">
                         <button class="welcome-hero-btn" type="submit">
                                 search  <i data-feather="search"></i> 
@@ -34,7 +48,7 @@
                     <div class=" col-md-4 col-sm-6">
                         <div class="single-explore-item">
                             <div class="single-explore-txt bg-theme-1">
-                                <h2><a href="#">{$r["title"]}</a></h2>
+                                <h2><a href="{$conf->action_url}editNote/{$r['id']}">{$r["title"]}</a></h2>
                                 <p class="explore-rating-price">
                                     utworzono {$r["creationDate"]}
                                     <span class="explore-price-box">
@@ -57,8 +71,8 @@
                                         </div>
                                         <div class="col-sm-7">
                                             <div class="explore-map-icon">
-                                                <a href="#"><i data-feather="edit-2"></i></a>
-                                                <a href="#"><i data-feather="trash"></i></a>
+                                                <a href="{$conf->action_url}editNote/{$r['id']}"><i data-feather="edit-2"></i></a>
+                                                <a href="{$conf->action_url}deleteNote/{$r['id']}"><i data-feather="trash"></i></a>
                                             </div>
                                         </div>
                                     </div>

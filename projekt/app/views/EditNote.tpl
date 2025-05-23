@@ -3,11 +3,11 @@
 {block name=return_action}notesList{/block}
 
 {block name=main_body}
-				<form action="{$conf->action_url}addNote" method="POST">
+				<form action="{$conf->action_url}saveNote" method="POST">
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="subscription-input-group">
-								<input type="text" class="subscription-input-form" name="title" placeholder="Note title">
+								<input type="text" class="subscription-input-form" name="title" value="{$note->title}">
 							</div>
 						</div>	
 					</div>
@@ -33,7 +33,7 @@
 											
 								{foreach $categories as $r}
 								{strip}
-									<option value="{$r["id"]}">{$r["name"]}</option>
+									<option value="{$r["id"]}" {if ($r["id"] == $note->category)}selected{/if}>{$r["name"]}</option>
 								{/strip}
 								{/foreach}
 							</select>
@@ -58,7 +58,7 @@
 											-webkit-transition:0.3s linear;
 											-moz-transition:0.3s linear;
 											-o-transition:0.3s linear;
-											transition:0.3s linear;">Content</textarea>
+											transition:0.3s linear;">{$note->content}</textarea>
 							</div>
 						</div>	
 					</div>
@@ -67,11 +67,12 @@
 						<div class="col-sm-12">
 							<div class="subscription-input-group">
 								<button class="appsLand-btn subscribe-btn" type="submit">
-									Create
+									Save
 								</button>
 							</div>
 						</div>	
 					</div>
+                    <input type="hidden" name="id" value="{$noteId}">
 				</form>
 
 {/block}

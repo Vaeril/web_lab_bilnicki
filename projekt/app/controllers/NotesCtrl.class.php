@@ -7,11 +7,14 @@ use app\forms\NoteForm;
 use core\App;
 use core\SessionUtils;
 use core\Validator;
+use core\Message;
+use core\Messages;
 
 class NotesCtrl {
 
       private $searchForm;
       private $noteForm;
+      private $noteId;
 
   // show notes list
 
@@ -29,11 +32,26 @@ class NotesCtrl {
   }
 
   function getRecords() {
-      $notesRecords = App::getDB()->select("notes", ["title", "content", "category", "creationDate", "lastModified"], 
-            ["AND" =>
-                ["isGroupNote" => 0,
-                "owner" => SessionUtils::load("id", true)]
-        ]);
+
+      // filtering from title and category
+      
+      $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
+      if (isset($this->searchForm->title) && strlen($this->searchForm->title) > 0) {
+            $search_params['title[~]'] = $this->searchForm->title . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
+      }
+      if (isset($this->searchForm->category) && $this->searchForm->category >= 0) {
+            $search_params['category'] = $this->searchForm->category;
+      }
+
+      $search_params['isGroupNote'] = '0';
+      $search_params['owner'] = SessionUtils::load("id", true);  
+      $where = ["AND" => &$search_params];
+
+
+
+      $notesRecords = App::getDB()->select("notes", 
+      ["title", "content", "category", "creationDate", "lastModified", "id"], 
+            $where);
       $categoriesRecords = App::getDB()->select("categories", ["name", "id"], 
             ["AND" =>
                 ["is_group_category" => 0,
@@ -55,10 +73,13 @@ class NotesCtrl {
             $note["creationDate"] = date("d-m-Y", $unixTime);
             $unixTime = strtotime($noteRecord["lastModified"]);
             $note["lastModified"] = date("d-m-Y", $unixTime);
+            $note["id"] = $noteRecord["id"];
             $notes[] = $note;
       }
 
+      App::getSmarty()->assign("searchForm", $this->searchForm);
       App::getSmarty()->assign("records", $notes);
+      App::getSmarty()->assign("categories", $categoriesRecords);
   }
 
   function generateListView() {
@@ -76,7 +97,7 @@ class NotesCtrl {
       App::getSmarty()->assign("categories", $categories);
 
       if($this->validateAddingNote()){
-            $this->saveNote();
+            $this->saveNewNote();
             $this->redirectToListView();
       } else {
             $this->returnToAddNote();
@@ -99,7 +120,7 @@ class NotesCtrl {
         return true;
   }
 
-  function saveNote() {
+  function saveNewNote() {
         App::getDB()->insert("notes",[
         "title" => $this->noteForm->title,
         "content" => $this->noteForm->text,
@@ -117,5 +138,128 @@ class NotesCtrl {
 
   function redirectToListView() {
       App::getRouter()->redirectTo("notesList");
+  }
+
+  // edit note
+
+  function action_editNote() {
+      if($this->validateEditNote()){
+            $categories = App::getDB()->select("categories", ["name", "id"], 
+                  ["AND" =>
+                  ["is_group_category" => 0,
+                  "owner" => SessionUtils::load("id", true)]
+            ]);
+            App::getSmarty()->assign("categories", $categories);
+
+            App::getSmarty()->assign("note", $this->noteForm);
+            App::getSmarty()->assign("noteId", $this->noteId);
+            App::getSmarty()->display("EditNote.tpl");
+      } else {
+            $this->redirectToListView();
+      }
+  }
+
+  function validateEditNote() {
+      $this->noteForm = new NoteForm();
+      $v = new Validator();
+
+      $this->noteId = $v->validateFromCleanURL(1, 
+        ["required" => true, "required_message" => "System error"]);
+        
+      if($v->isLastOK() == false){
+            return false;
+      }
+      
+      $notes = App::getDB()->select("notes",[
+        "title",
+        "content",
+        "category"
+        ], [
+            "id" => $this->noteId
+        ]);
+        
+      if(count($notes) == 0){
+            return false;
+      }
+      
+      // There should be only one
+      foreach($notes as $note) {
+            $this->noteForm->title = $note["title"];
+            $this->noteForm->content = $note["content"];
+            $this->noteForm->category = $note["category"];
+      }
+
+      return true;
+  }
+
+  // save note
+
+  function action_saveNote() {
+      if($this->validateSaveNote()){
+            $this->saveNote();
+            App::getSmarty()->assign("note", $this->noteForm);
+            App::getRouter()->redirectTo("editNote/".$this->noteId) ;
+      } else {
+            App::getSmarty()->assign("note", $this->noteForm);
+            App::getRouter()->redirectTo("editNote/".$this->noteId) ;
+      }
+  }
+
+  function validateSaveNote() {
+        $this->noteForm = new NoteForm();
+        $v = new Validator();
+        
+        $this->noteId = $v->validateFromRequest("id", 
+        ["required" => true, "required_message" => "System error"]);
+        if($v->isLastOK() == false){
+            $this->redirectToListView();
+        }
+
+        $this->noteForm->text = $v->validateFromRequest("text");
+        $this->noteForm->category = $v->validateFromRequest("category");
+
+        $this->noteForm->title = $v->validateFromRequest("title", 
+        ["required" => true, "required_message" => "Note must have a title"]);
+        if($v->isLastOK() == false){
+            return false;
+        }
+
+        return true;
+  }
+
+  function saveNote() {
+      App::getDB()->update("notes", [
+      "title" => $this->noteForm->title,
+      "content" => $this->noteForm->text,
+      "category"=> $this->noteForm->category,
+      "lastModified" => date('Y-m-d H:i:s')], 
+            ["id" => $this->noteId]);
+  }
+
+  // delete Note
+
+  function action_deleteNote() {
+      if($this->validateDeleteNote()){
+            App::getDB()->delete("notes", [
+                  "id" => $this->noteId
+            ]);
+        $m = new Message("Note deleted successfully", "info");
+        App::getMessages()->addMessage($m);
+      }
+      
+      App::getRouter()->forwardTo('notesList');
+  }
+
+  function validateDeleteNote() {
+      $v = new Validator();
+
+      $this->noteId = $v->validateFromCleanURL(1, 
+        ["required" => true, "required_message" => "System error"]);
+        
+      if($v->isLastOK() == false){
+            return false;
+      }
+
+      return true;
   }
 }
