@@ -21,8 +21,8 @@
                                     </div>
                                     <div class="col-sm-7">
                                         <div class="explore-map-icon">
-                                            <a href="#"><i data-feather="edit-2"></i></a>
-                                            <a href="#"><i data-feather="trash"></i></a>
+                                            <a href="{$conf->action_url}editCategory/{$r['id']}"><i data-feather="edit-2"></i></a>
+                                            <a href="{$conf->action_url}deleteCategory/{$r['id']}"><i data-feather="trash"></i></a>
                                         </div>
                                     </div>
                                 </div>
