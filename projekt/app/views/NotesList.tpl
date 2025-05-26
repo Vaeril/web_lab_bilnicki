@@ -1,6 +1,6 @@
 {extends file="main.tpl"}
 
-{block name=return_action}notesList{/block}
+{block name=return_action}<li><a href="{$conf->action_url}notesList">return</a></li>{/block}
 
 {block name=main_body}
 
@@ -89,16 +89,6 @@
                     <form action="{$conf->action_url}addNote">
                     <button class="welcome-hero-btn">
                         + new note
-                    </button>
-                    </form>
-                </div>
-                </div>
-                <br>
-                <div class="row">
-                <div class=" col-md-4 col-sm-6">
-                <form action="{$conf->action_url}categoriesList">
-                    <button class="welcome-hero-btn">
-                        edit categories
                     </button>
                     </form>
                 </div>

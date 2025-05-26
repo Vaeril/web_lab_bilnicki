@@ -1,6 +1,6 @@
 {extends file="main.tpl"}
 
-{block name=return_action}notesList{/block}
+{block name=return_action}<li><a href="{$conf->action_url}notesList">return</a></li>{/block}
 
 {block name=main_body}
 
@@ -13,7 +13,7 @@
                 <div class=" col-md-4 col-sm-6">
                     <div class="single-explore-item">
                         <div class="single-explore-txt bg-theme-1">
-                            <h2><a href="#">    {$r["name"]}    </a></h2>
+                            <h2><a href="{$conf->action_url}editCategory/{$r['id']}">    {$r["name"]}    </a></h2>
                             <div class="explore-open-close-part">
                                 <div class="row">
                                     <div class="col-sm-5">

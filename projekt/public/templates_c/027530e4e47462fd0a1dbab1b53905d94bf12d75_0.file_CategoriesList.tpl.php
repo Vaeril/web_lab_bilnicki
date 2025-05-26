@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 18:09:42
+/* Smarty version 5.4.5, created on 2025-05-26 20:40:19
   from 'file:CategoriesList.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_68349246b64200_67811359',
+  'unifunc' => 'content_6834b593b13d63_10208205',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '027530e4e47462fd0a1dbab1b53905d94bf12d75' => 
     array (
       0 => 'CategoriesList.tpl',
-      1 => 1748275533,
+      1 => 1748284795,
       2 => 'file',
     ),
   ),
@@ -21,40 +21,41 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:messages.tpl' => 1,
   ),
 ))) {
-function content_68349246b64200_67811359 (\Smarty\Template $_smarty_tpl) {
+function content_6834b593b13d63_10208205 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_7662208568349246928827_04974325', 'return_action');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_18404554816834b593af7ca8_80574716', 'return_action');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_198631954268349246a0a9f1_51838113', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_19868822596834b593afd868_93013442', 'main_body');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_172204236868349246b1b427_80006783', "messages");
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_4852052476834b593b10313_78029908', "messages");
 ?>
 
 <?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, "main.tpl", $_smarty_current_dir);
 }
 /* {block 'return_action'} */
-class Block_7662208568349246928827_04974325 extends \Smarty\Runtime\Block
+class Block_18404554816834b593af7ca8_80574716 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 ?>
-notesList<?php
+<li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+notesList">return</a></li><?php
 }
 }
 /* {/block 'return_action'} */
 /* {block 'main_body'} */
-class Block_198631954268349246a0a9f1_51838113 extends \Smarty\Runtime\Block
+class Block_19868822596834b593afd868_93013442 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
@@ -71,7 +72,9 @@ $foreach0DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('r')->value) {
 $foreach0DoElse = false;
 ?>
-            <div class=" col-md-4 col-sm-6"><div class="single-explore-item"><div class="single-explore-txt bg-theme-1"><h2><a href="#"> <?php echo $_smarty_tpl->getValue('r')["name"];?>
+            <div class=" col-md-4 col-sm-6"><div class="single-explore-item"><div class="single-explore-txt bg-theme-1"><h2><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+editCategory/<?php echo $_smarty_tpl->getValue('r')['id'];?>
+">    <?php echo $_smarty_tpl->getValue('r')["name"];?>
     </a></h2><div class="explore-open-close-part"><div class="row"><div class="col-sm-5"><p> <?php echo $_smarty_tpl->getValue('r')["color"];?>
    </p></div><div class="col-sm-7"><div class="explore-map-icon"><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
 editCategory/<?php echo $_smarty_tpl->getValue('r')['id'];?>
@@ -101,7 +104,7 @@ addCategory">
 }
 /* {/block 'main_body'} */
 /* {block "messages"} */
-class Block_172204236868349246b1b427_80006783 extends \Smarty\Runtime\Block
+class Block_4852052476834b593b10313_78029908 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';

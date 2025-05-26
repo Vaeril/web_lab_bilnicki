@@ -1,6 +1,6 @@
 {extends file="main.tpl"}
 
-{block name=return_action}notesList{/block}
+{block name=return_action}<li><a href="{$conf->action_url}notesList">return</a></li>{/block}
 
 {block name=main_body}
 				<form action="{$conf->action_url}addNote" method="POST">

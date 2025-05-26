@@ -39,7 +39,6 @@ Utils::addRoute('deleteCategory', 'CategoriesCtrl', 'user');
 
         // for users - managing groups
 //Utils::addRoute('groupsList', 'GroupsCtrl', 'user');
-//Utils::addRoute('leaveGroup', 'GroupsCtrl', 'user');
 
         // for admins - managing users
 //Utils::addRoute('usersList', 'UsersCtrl', 'admin');
@@ -52,5 +51,19 @@ Utils::addRoute('deleteCategory', 'CategoriesCtrl', 'user');
 //Utils::addRoute('addNewGroup', 'AdminGroupsCtrl', 'admin');
 //Utils::addRoute('deleteGroup', 'AdminGroupsCtrl', 'admin');
 //Utils::addRoute('addUserToGroup', 'AdminGroupsCtrl', 'admin');
+
+        // new idea - role: lead
+// add group
+// edit group
+// save group
+// show user list (for adding to group)
+// add user to group
+// delete group
+// remove user from group
+// group categories list
+// edit group category
+// save group category
+// add group category
+// delete group category
 
 App::getRouter()->go();
