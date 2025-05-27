@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\forms\NoteForm;
+use app\forms\GroupForm;
 use core\App;
 use core\SessionUtils;
 use core\Validator;
@@ -12,9 +12,8 @@ use core\Messages;
 class GroupsCtrl {
 
       private $searchName;
-      private $serachMember;
-      private $groupName;
-      private $groupId;
+      private $searchMember;
+      private $groupForm;
 
   // show groups list
 
@@ -75,7 +74,7 @@ class GroupsCtrl {
   function validateAddingGroup() {
         $v = new Validator();
 
-        $this->groupName = $v->validateFromRequest("name", 
+        $this->groupForm->groupName = $v->validateFromRequest("name", 
         ["required" => true]);
         if($v->isLastOK() == false){
             App::getMessages()->clear();
@@ -87,7 +86,7 @@ class GroupsCtrl {
 
   function saveNewGroup() {
         App::getDB()->insert("groups",[
-        "name" => $this->groupName,
+        "name" => $this->groupForm->groupName,
         "owner" => SessionUtils::load("id", true)
         ]);
 
@@ -166,11 +165,10 @@ class GroupsCtrl {
 
   // edit groups
 
-  function action_editNote() {
+  function action_editGroup() {
       if($this->validateEditGroup()){
             $this->getMembers();
-
-            App::getSmarty()->assign("groupId", $this->groupId);
+            App::getSmarty()->assign("form", $this->groupForm);
             App::getSmarty()->display("EditGroup.tpl");
       } else {
             $this->redirectToListView();
@@ -178,70 +176,74 @@ class GroupsCtrl {
   }
 
   function validateEditGroup() {
-      $this->noteForm = new NoteForm();
       $v = new Validator();
+      $this->groupForm = new GroupForm();
 
-      $this->noteId = $v->validateFromCleanURL(1, 
+      $this->groupForm->id = $v->validateFromCleanURL(1, 
         ["required" => true, "required_message" => "System error"]);
         
       if($v->isLastOK() == false){
             return false;
       }
       
-      $notes = App::getDB()->select("notes",[
-        "title",
-        "content",
-        "category"
-        ], [
-            "id" => $this->noteId
+      $groups = App::getDB()->select("groups", 
+      "*", 
+      [
+            "AND" =>
+            [
+            "id" => $this->groupForm->id,
+            "owner" => SessionUtils::load("id", true)
+            ]
         ]);
         
-      if(count($notes) == 0){
+      if(count($groups) == 0){
             return false;
       }
       
       // There should be only one
-      foreach($notes as $note) {
-            $this->noteForm->title = $note["title"];
-            $this->noteForm->content = $note["content"];
-            $this->noteForm->category = $note["category"];
-      }
+      $this->groupForm->groupName = $groups[0]["name"];
 
       return true;
   }
 
   function getMembers() {
-
+      $members = App::getDB()->select("groups",
+      [
+            "[><]groups_has_users" => ["id" => "groups_id"],
+            "[><]users" => ["groups_has_users.users_id" => "id"]
+      ], [
+            "users.id",
+            "users.mail",
+            "groups.owner"
+      ], ["groups_has_users.groups_id" => $this->groupForm->id]);
+      App::getSmarty()->assign("records", $members);
   }
 
-  // save note
+  // save group
 
-  function action_saveNote() {
-      if($this->validateSaveNote()){
-            $this->saveNote();
-            App::getSmarty()->assign("note", $this->noteForm);
-            App::getRouter()->redirectTo("editNote/".$this->noteId) ;
+  function action_saveGroup() {
+      if($this->validateSaveGroup()){
+            $this->saveGroup();
+            App::getSmarty()->assign("form", $this->groupForm);
+            App::getRouter()->redirectTo("editGroup/".$this->groupForm->id) ;
       } else {
-            App::getSmarty()->assign("note", $this->noteForm);
-            App::getRouter()->redirectTo("editNote/".$this->noteId) ;
+            App::getSmarty()->assign("form", $this->groupForm);
+            App::getRouter()->redirectTo("editGroup/".$this->groupForm->id) ;
       }
   }
 
-  function validateSaveNote() {
-        $this->noteForm = new NoteForm();
+  function validateSaveGroup() {
         $v = new Validator();
+        $this->groupForm = new GroupForm();
         
-        $this->noteId = $v->validateFromRequest("id", 
+        $this->groupForm->id = $v->validateFromRequest("id", 
         ["required" => true, "required_message" => "System error"]);
         if($v->isLastOK() == false){
             $this->redirectToListView();
         }
 
-        $this->noteForm->text = $v->validateFromRequest("text");
-        $this->noteForm->category = $v->validateFromRequest("category");
-
-        $this->noteForm->title = $v->validateFromRequest("title", 
-        ["required" => true, "required_message" => "Note must have a title"]);
+        $this->groupForm->groupName = $v->validateFromRequest("name", 
+        ["required" => true, "required_message" => "Group must have a name"]);
         if($v->isLastOK() == false){
             return false;
         }
@@ -249,13 +251,32 @@ class GroupsCtrl {
         return true;
   }
 
-  function saveNote() {
-      App::getDB()->update("notes", [
-      "title" => $this->noteForm->title,
-      "content" => $this->noteForm->text,
-      "category"=> $this->noteForm->category,
-      "lastModified" => date('Y-m-d H:i:s')], 
-            ["id" => $this->noteId]);
+  function saveGroup() {
+      App::getDB()->update("groups", [
+      "name" => $this->groupForm->groupName],
+            ["id" => $this->groupForm->id]);
+  }
+
+  // add member
+
+  function action_addMember() {
+      if($this->validateAddMember()){
+            App::getSmarty()->assign("form", $this->groupForm);
+            App::getSmarty()->display("AddMember.tpl");
+      }
+  }
+
+  function validateAddMember() {
+        $v = new Validator();
+        $this->groupForm = new GroupForm();
+        
+        $this->groupForm->id = $v->validateFromRequest("id", 
+        ["required" => true, "required_message" => "System error"]);
+        if($v->isLastOK() == false){
+            $this->redirectToListView();
+        }
+
+        return true;
   }
 
   // delete Note
@@ -263,9 +284,9 @@ class GroupsCtrl {
   function action_deleteNote() {
       if($this->validateDeleteNote()){
             App::getDB()->delete("notes", [
-                  "id" => $this->noteId
+                  "id" => $this->groupForm->id
             ]);
-        $m = new Message("Note deleted successfully", "info");
+        $m = new Message("Group deleted successfully", "info");
         App::getMessages()->addMessage($m);
       }
       

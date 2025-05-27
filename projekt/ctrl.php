@@ -58,7 +58,8 @@ Utils::addRoute('enterGroupSpace', 'GroupsCtrl', ['user', 'lead']);
 Utils::addRoute('exitGroupSpace', 'GroupsCtrl', ['user', 'lead']);
 
 Utils::addRoute('editGroup', 'GroupsCtrl', 'lead');
-// save group
+Utils::addRoute('saveGroup', 'GroupsCtrl', 'lead');
+Utils::addRoute('addMember', 'GroupsCtrl', 'lead');
 // show user list (for adding to group)
 // add user to group
 // delete group
