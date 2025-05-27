@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 20:40:16
+/* Smarty version 5.4.5, created on 2025-05-27 11:08:49
   from 'file:main.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6834b5905cbbb6_71076357',
+  'unifunc' => 'content_683581215d0579_13698687',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd645efda29af69fed07f7f4406cbcfa5986f4bad' => 
     array (
       0 => 'main.tpl',
-      1 => 1748284811,
+      1 => 1748336927,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6834b5905cbbb6_71076357 (\Smarty\Template $_smarty_tpl) {
+function content_683581215d0579_13698687 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 ?>
@@ -110,32 +110,49 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 
 			        <div class="container">
 
+						<?php 
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_10856205656835812159cb35_88061544', 'left_navbar');
+?>
+
+
 			            <!-- Collect the nav links, forms, and other content for toggling -->
 			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
 			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-								<?php if ((\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))) {?>
+								<?php if ((\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))) {?>
 			                    <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_17458974656834b5905aedf6_95628099', 'return_action');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_519423580683581215a8b79_82830880', 'return_action');
 ?>
 
 								<?php }?>
-								<?php if (\core\RoleUtils::inRole("user")) {?>
+								
+								<?php if ((!(\core\SessionUtils::load("groupId",true)))) {?>
+								<?php if ((\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))) {?>
 			                    <li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
 groupsList">my groups</a></li>
 								<?php }?>
-								<?php if (\core\RoleUtils::inRole("user")) {?>
+								<?php if ((\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))) {?>
 			                    <li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
 categoriesList">my categories</a></li>
 								<?php }?>
-								<?php if (!(\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))) {?>
+								<?php }?>
+
+								
+								<?php if (\core\SessionUtils::load("groupId",true)) {?>
+								<?php if ((\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))) {?>
+			                    <li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+categoriesList">group categories</a></li>
+								<?php }?>
+								<?php }?>
+
+								<?php if (!(\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))) {?>
 			                    <li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
 register">register</a></li>
 								<?php }?>
-								<?php if (!(\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))) {?>
+								<?php if (!(\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))) {?>
 			                    <li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
 login">log in</a></li>
 								<?php }?>
-								<?php if ((\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))) {?>
+								<?php if ((\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))) {?>
 			                    <li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
 logout">log out</a></li>
 								<?php }?>
@@ -154,7 +171,7 @@ logout">log out</a></li>
 
 		<!--welcome-hero start -->
                 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_7342208476834b5905bfcd0_24955453', 'welcome_hero');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_2000035819683581215c4087_36259193', 'welcome_hero');
 ?>
 
                 <!--/.welcome-hero-->
@@ -164,7 +181,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_7342208476834
 		<section id="explore" class="explore">
 			<div class="container">
                 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_11193955106834b5905c11e0_00287104', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1104482686683581215c5c83_84844179', 'main_body');
 ?>
 
 			</div><!--/.container-->
@@ -176,7 +193,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1119395510683
 		<section id="messages" class="explore">
 		<div class="container">
 			<?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_13146597016834b5905c2610_67649327', 'messages');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1157582649683581215c7087_78268856', 'messages');
 ?>
 
 		</div>
@@ -267,8 +284,16 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1314659701683
     </body>
 	
 </html><?php }
+/* {block 'left_navbar'} */
+class Block_10856205656835812159cb35_88061544 extends \Smarty\Runtime\Block
+{
+public function callBlock(\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
+}
+}
+/* {/block 'left_navbar'} */
 /* {block 'return_action'} */
-class Block_17458974656834b5905aedf6_95628099 extends \Smarty\Runtime\Block
+class Block_519423580683581215a8b79_82830880 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -276,7 +301,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'return_action'} */
 /* {block 'welcome_hero'} */
-class Block_7342208476834b5905bfcd0_24955453 extends \Smarty\Runtime\Block
+class Block_2000035819683581215c4087_36259193 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -286,7 +311,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'welcome_hero'} */
 /* {block 'main_body'} */
-class Block_11193955106834b5905c11e0_00287104 extends \Smarty\Runtime\Block
+class Block_1104482686683581215c5c83_84844179 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -296,7 +321,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'main_body'} */
 /* {block 'messages'} */
-class Block_13146597016834b5905c2610_67649327 extends \Smarty\Runtime\Block
+class Block_1157582649683581215c7087_78268856 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';

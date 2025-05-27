@@ -1,6 +1,18 @@
 {extends file="main.tpl"}
 
-{block name=return_action}<li><a href="{$conf->action_url}notesList">return</a></li>{/block}
+{if \core\SessionUtils::load("groupId", true)}
+{block name=left_navbar}
+
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+            <i class="fa fa-bars"></i>
+        </button>
+        <a class="navbar-brand">Group: <span>{\core\SessionUtils::load("groupName", true)}</span></a>
+
+    </div>
+{/block}
+    {block name=return_action}<li><a href="{$conf->action_url}exitGroupSpace">return</a></li>{/block}
+{/if}
 
 {block name=main_body}
 

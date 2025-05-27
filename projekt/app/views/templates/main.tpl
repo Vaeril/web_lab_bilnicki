@@ -69,25 +69,38 @@
 
 			        <div class="container">
 
+						{block name = left_navbar}{/block}
+
 			            <!-- Collect the nav links, forms, and other content for toggling -->
 			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
 			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-								{if (\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))}
+								{if (\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))}
 			                    {block name = return_action}{/block}
 								{/if}
-								{if \core\RoleUtils::inRole("user")}
+								
+								{if (!(\core\SessionUtils::load("groupId", true)))}
+								{if (\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))}
 			                    <li><a href="{$conf->action_url}groupsList">my groups</a></li>
 								{/if}
-								{if \core\RoleUtils::inRole("user")}
+								{if (\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))}
 			                    <li><a href="{$conf->action_url}categoriesList">my categories</a></li>
 								{/if}
-								{if !(\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))}
+								{/if}
+
+								
+								{if \core\SessionUtils::load("groupId", true)}
+								{if (\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))}
+			                    <li><a href="{$conf->action_url}categoriesList">group categories</a></li>
+								{/if}
+								{/if}
+
+								{if !(\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))}
 			                    <li><a href="{$conf->action_url}register">register</a></li>
 								{/if}
-								{if !(\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))}
+								{if !(\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))}
 			                    <li><a href="{$conf->action_url}login">log in</a></li>
 								{/if}
-								{if (\core\RoleUtils::inRole("admin") || \core\RoleUtils::inRole("user"))}
+								{if (\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))}
 			                    <li><a href="{$conf->action_url}logout">log out</a></li>
 								{/if}
 			                </ul><!--/.nav -->

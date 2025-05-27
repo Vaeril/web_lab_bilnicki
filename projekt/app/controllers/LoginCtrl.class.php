@@ -86,7 +86,7 @@ class LoginCtrl {
     }
 
     $this->registerForm->role = $v->validateFromRequest("role", [""]);
-    if($this->registerForm->role != "admin"){
+    if($this->registerForm->role != "lead"){
         $this->registerForm->role = "user";
     }
     
@@ -108,6 +108,13 @@ class LoginCtrl {
         foreach($database_user as $user){
             $this->loginForm->id = $database_user["id"];
         }
+
+        App::getDB()->insert("categories",[
+        "name" => "no category",
+        "color" => "red",
+        "owner" => $this->loginForm->id,
+        "is_group_category" => 0
+        ]);
   }
 
   function returnToRegister() {
@@ -198,7 +205,7 @@ class LoginCtrl {
         if(RoleUtils::inRole("user")){
             App::getRouter()->redirectTo("notesList");
         } else {
-            App::getRouter()->redirectTo("hello");
+            App::getRouter()->redirectTo("notesList");
         }
   }
 }

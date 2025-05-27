@@ -43,20 +43,21 @@ class NotesCtrl {
             $search_params['category'] = $this->searchForm->category;
       }
 
-      $search_params['isGroupNote'] = '0';
-      $search_params['owner'] = SessionUtils::load("id", true);  
+      if(SessionUtils::load("groupId", true)){
+            $search_params['isGroupNote'] = '1';
+            $search_params['owner_group'] = SessionUtils::load("groupId", true);  
+      } else {
+            $search_params['isGroupNote'] = '0';
+            $search_params['owner'] = SessionUtils::load("id", true);  
+      }
       $where = ["AND" => &$search_params];
-
 
 
       $notesRecords = App::getDB()->select("notes", 
       ["title", "content", "category", "creationDate", "lastModified", "id"], 
             $where);
-      $categoriesRecords = App::getDB()->select("categories", ["name", "id"], 
-            ["AND" =>
-                ["is_group_category" => 0,
-                "owner" => SessionUtils::load("id", true)]
-        ]);
+
+      $categoriesRecords = $this->getCategories();
 
       $notes = array();
       foreach( $notesRecords as $noteRecord ) {
@@ -89,12 +90,7 @@ class NotesCtrl {
   // add note
 
   public function action_addNote() {
-      $categories = App::getDB()->select("categories", ["name", "id"], 
-            ["AND" =>
-                ["is_group_category" => 0,
-                "owner" => SessionUtils::load("id", true)]
-        ]);
-      App::getSmarty()->assign("categories", $categories);
+      App::getSmarty()->assign("categories", $this->getCategories());
 
       if($this->validateAddingNote()){
             $this->saveNewNote();
@@ -121,15 +117,21 @@ class NotesCtrl {
   }
 
   function saveNewNote() {
-        App::getDB()->insert("notes",[
-        "title" => $this->noteForm->title,
-        "content" => $this->noteForm->text,
-        "owner" => SessionUtils::load("id", true),
-        "isGroupNote" => 0,
-        "category" => $this->noteForm->category,
-        "creationDate" => date('Y-m-d H:i:s'),
-        "lastModified" => date('Y-m-d H:i:s')
-        ]);
+        $params["title"] = $this->noteForm->title;
+        $params["content"] = $this->noteForm->text;
+        $params["category"] = $this->noteForm->category;
+        $params["creationDate"] = date('Y-m-d H:i:s');
+        $params["lastModified"] = date('Y-m-d H:i:s');
+
+        if(SessionUtils::load("groupId", true)){
+                $params['isGroupNote'] = '1';
+                $params['owner_group'] = SessionUtils::load("groupId", true);  
+        } else {
+                $params['isGroupNote'] = '0';
+                $params['owner'] = SessionUtils::load("id", true);  
+        }
+
+        App::getDB()->insert("notes", $params);
   }
 
   function returnToAddNote() {
@@ -144,12 +146,7 @@ class NotesCtrl {
 
   function action_editNote() {
       if($this->validateEditNote()){
-            $categories = App::getDB()->select("categories", ["name", "id"], 
-                  ["AND" =>
-                  ["is_group_category" => 0,
-                  "owner" => SessionUtils::load("id", true)]
-            ]);
-            App::getSmarty()->assign("categories", $categories);
+            App::getSmarty()->assign("categories", $this->getCategories());
 
             App::getSmarty()->assign("note", $this->noteForm);
             App::getSmarty()->assign("noteId", $this->noteId);
@@ -261,5 +258,20 @@ class NotesCtrl {
       }
 
       return true;
+  }
+
+  function getCategories() {
+      if(SessionUtils::load("groupId", true)){
+            $cat_params['is_group_category'] = '1';
+            $cat_params['owner_group'] = SessionUtils::load("groupId", true);  
+      } else {
+            $cat_params['is_group_category'] = '0';
+            $cat_params['owner'] = SessionUtils::load("id", true);  
+      }
+
+      return App::getDB()->select("categories", ["name", "id"], 
+            ["AND" =>
+                &$cat_params]
+        );
   }
 }

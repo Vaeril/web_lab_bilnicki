@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-27 11:15:26
-  from 'file:CategoriesList.tpl' */
+/* Smarty version 5.4.5, created on 2025-05-27 10:33:48
+  from 'file:GroupsList.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683582ae1dc4f8_70388297',
+  'unifunc' => 'content_683578ec640d65_44308776',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '027530e4e47462fd0a1dbab1b53905d94bf12d75' => 
+    '9d2b46c6eaff4860ebdfba5e01e621d1b20d883f' => 
     array (
-      0 => 'CategoriesList.tpl',
-      1 => 1748337322,
+      0 => 'GroupsList.tpl',
+      1 => 1748334060,
       2 => 'file',
     ),
   ),
@@ -21,57 +21,30 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:messages.tpl' => 1,
   ),
 ))) {
-function content_683582ae1dc4f8_70388297 (\Smarty\Template $_smarty_tpl) {
+function content_683578ec640d65_44308776 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
-<?php if (\core\SessionUtils::load("groupId",true)) {
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1239601070683582ae1bacd0_08876695', 'left_navbar');
-?>
-
-<?php }?>
-
-
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1977311475683582ae1c3ab2_32342947', 'return_action');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1315700708683578ec61e294_10082055', 'return_action');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1171134647683582ae1c5d00_90349328', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_429325589683578ec623f10_35864267', 'main_body');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_54156712683582ae1d86f6_28307267', "messages");
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_737638408683578ec63d380_71115681', "messages");
 ?>
 
 <?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, "main.tpl", $_smarty_current_dir);
 }
-/* {block 'left_navbar'} */
-class Block_1239601070683582ae1bacd0_08876695 extends \Smarty\Runtime\Block
-{
-public function callBlock(\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
-?>
-
-
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
-            <i class="fa fa-bars"></i>
-        </button>
-        <a class="navbar-brand">Group: <span><?php echo \core\SessionUtils::load("groupName",true);?>
-</span></a>
-
-    </div>
-<?php
-}
-}
-/* {/block 'left_navbar'} */
 /* {block 'return_action'} */
-class Block_1977311475683582ae1c3ab2_32342947 extends \Smarty\Runtime\Block
+class Block_1315700708683578ec61e294_10082055 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
@@ -82,11 +55,35 @@ notesList">return</a></li><?php
 }
 /* {/block 'return_action'} */
 /* {block 'main_body'} */
-class Block_1171134647683582ae1c5d00_90349328 extends \Smarty\Runtime\Block
+class Block_429325589683578ec623f10_35864267 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 ?>
+
+
+        <div class="welcome-hero-serch-box">
+            <form action="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+groupsList">
+                <div class="welcome-hero-form">
+                    <div class="single-welcome-hero-form">
+                        <h3>name</h3>
+                        <input type="text" name="name" value="<?php echo $_smarty_tpl->getValue('searchName');?>
+"/>
+                    </div>
+                    <div class="single-welcome-hero-form">
+                        <h3>member</h3>
+                        <input type="text" name="member" value="<?php echo $_smarty_tpl->getValue('searchMember');?>
+"/>
+                    </div>
+                    <div class="welcome-hero-serch">
+                        <button class="welcome-hero-btn" type="submit">
+                                search  <i data-feather="search"></i> 
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
 
 <div class="explore-content">
@@ -100,28 +97,31 @@ foreach ($_from ?? [] as $_smarty_tpl->getVariable('r')->value) {
 $foreach0DoElse = false;
 ?>
             <div class=" col-md-4 col-sm-6"><div class="single-explore-item"><div class="single-explore-txt bg-theme-1"><h2><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-editCategory/<?php echo $_smarty_tpl->getValue('r')['id'];?>
+enterGroupSpace/<?php echo $_smarty_tpl->getValue('r')['id'];?>
 ">    <?php echo $_smarty_tpl->getValue('r')["name"];?>
-    </a></h2><div class="explore-open-close-part"><div class="row"><div class="col-sm-5"><p> <?php echo $_smarty_tpl->getValue('r')["color"];?>
+    </a></h2><div class="explore-open-close-part"><div class="row"><div class="col-sm-5"><p>     owner: <?php echo $_smarty_tpl->getValue('r')["mail"];?>
    </p></div><div class="col-sm-7"><div class="explore-map-icon"><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-editCategory/<?php echo $_smarty_tpl->getValue('r')['id'];?>
+editGroup/<?php echo $_smarty_tpl->getValue('r')['id'];?>
 "><i data-feather="edit-2"></i></a><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-deleteCategory/<?php echo $_smarty_tpl->getValue('r')['id'];?>
+deleteGroup/<?php echo $_smarty_tpl->getValue('r')['id'];?>
 "><i data-feather="trash"></i></a></div></div></div></div></div></div></div>
             <?php
 }
 $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
 
+
+            <?php if (\core\RoleUtils::inRole("lead")) {?>
                 <div class="row">
                 <div class=" col-md-4 col-sm-6">
-                <form action="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-addCategory">
-                    <button class="welcome-hero-btn" type="submit">
-                        + new category
+                    <form action="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+addGroup">
+                    <button class="welcome-hero-btn">
+                        + new group
                     </button>
-                </form>
+                    </form>
                 </div>
                 </div>
+            <?php }?>
 
             </div>
 </div>
@@ -131,7 +131,7 @@ addCategory">
 }
 /* {/block 'main_body'} */
 /* {block "messages"} */
-class Block_54156712683582ae1d86f6_28307267 extends \Smarty\Runtime\Block
+class Block_737638408683578ec63d380_71115681 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';

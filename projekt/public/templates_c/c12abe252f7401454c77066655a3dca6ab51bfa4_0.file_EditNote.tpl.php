@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-23 16:17:06
+/* Smarty version 5.4.5, created on 2025-05-27 08:49:40
   from 'file:EditNote.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683083625819e5_02958871',
+  'unifunc' => 'content_683560849f1989_66388468',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'c12abe252f7401454c77066655a3dca6ab51bfa4' => 
     array (
       0 => 'EditNote.tpl',
-      1 => 1748009815,
+      1 => 1748284807,
       2 => 'file',
     ),
   ),
@@ -21,40 +21,41 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:messages.tpl' => 1,
   ),
 ))) {
-function content_683083625819e5_02958871 (\Smarty\Template $_smarty_tpl) {
+function content_683560849f1989_66388468 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_80736823868308362564ad7_74445254', 'return_action');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1301606019683560847b5c33_41122281', 'return_action');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1549289129683083625690d6_19656938', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1598027939683560847c0e81_59369461', 'main_body');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_11777824396830836257e135_53453663', "messages");
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_493756817683560849e9b79_70736982', "messages");
 ?>
 
 <?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, "main.tpl", $_smarty_current_dir);
 }
 /* {block 'return_action'} */
-class Block_80736823868308362564ad7_74445254 extends \Smarty\Runtime\Block
+class Block_1301606019683560847b5c33_41122281 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 ?>
-notesList<?php
+<li><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+notesList">return</a></li><?php
 }
 }
 /* {/block 'return_action'} */
 /* {block 'main_body'} */
-class Block_1549289129683083625690d6_19656938 extends \Smarty\Runtime\Block
+class Block_1598027939683560847c0e81_59369461 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
@@ -148,7 +149,7 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
 }
 /* {/block 'main_body'} */
 /* {block "messages"} */
-class Block_11777824396830836257e135_53453663 extends \Smarty\Runtime\Block
+class Block_493756817683560849e9b79_70736982 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';

@@ -22,12 +22,7 @@ class CategoriesCtrl {
     }
 
     function getRecords() {
-        $records = App::getDB()->select("categories", "*", 
-            ["AND" =>
-                ["is_group_category" => 0,
-                "owner" => SessionUtils::load("id", true)]
-        ]);
-        App::getSmarty()->assign("records", $records);
+        App::getSmarty()->assign("records", $this->getCategories(null, null));
     }
 
     function generateListView() {
@@ -62,12 +57,18 @@ class CategoriesCtrl {
     }
 
     function saveNewCategory() {
-        App::getDB()->insert("categories",[
-        "name" => $this->form->name,
-        "color" => $this->form->color,
-        "owner" => SessionUtils::load("id", true),
-        "is_group_category" => 0
-        ]);
+        $cat_params["name"] = $this->form->name;
+        $cat_params["color"] = $this->form->color;
+
+        if(SessionUtils::load("groupId", true)){
+                $cat_params['is_group_category'] = '1';
+                $cat_params['owner_group'] = SessionUtils::load("groupId", true);  
+        } else {
+                $cat_params['is_group_category'] = '0';
+                $cat_params['owner'] = SessionUtils::load("id", true);  
+        }
+
+        App::getDB()->insert("categories", $cat_params);
     }
 
     function redirectToList() {
@@ -87,6 +88,9 @@ class CategoriesCtrl {
     }
 
     function validateEditCategory() {
+
+
+        
         $this->form = new CategoryForm();
         $v = new Validator();
 
@@ -97,12 +101,7 @@ class CategoriesCtrl {
                 return false;
         }
         
-        $categories = App::getDB()->select("categories",[
-            "name",
-            "color"
-            ], [
-                "id" => $this->categoryId
-            ]);
+        $categories = $this->getCategories("id", $this->categoryId);
             
         if(count($categories) == 0){
                 return false;
@@ -183,23 +182,11 @@ class CategoriesCtrl {
   function deleteCategory() {
         $newCategory = $this->categoryId - 1;
 
-        $database = App::getDB() -> select("categories", 
-            ["name"],
-            ["AND" =>
-            ["id" => $newCategory,
-            "owner" => SessionUtils::load("id", true),
-            "is_group_category" => '0']
-        ]);
+        $categoriesRecords = $this->getCategories("id", $newCategory);
 
-        while(count($database) == 0){
+        while(count($categoriesRecords) == 0){
             $newCategory = $newCategory - 1;
-            $database = App::getDB() -> select("categories", 
-                ["name"],
-                ["AND" =>
-                ["id" => $newCategory,
-                "owner" => SessionUtils::load("id", true),
-                "is_group_category" => '0']
-            ]);
+            $categoriesRecords = $this->getCategories("id", $newCategory);
 
             if($newCategory <= 0)
                 return false;
@@ -216,5 +203,23 @@ class CategoriesCtrl {
             ]);
         $m = new Message("Category deleted successfully", "info");
         App::getMessages()->addMessage($m);
+  }
+
+  function getCategories($additionalTag, $additionalValue) {
+    if(SessionUtils::load("groupId", true)){
+            $cat_params['is_group_category'] = '1';
+            $cat_params['owner_group'] = SessionUtils::load("groupId", true);  
+      } else {
+            $cat_params['is_group_category'] = '0';
+            $cat_params['owner'] = SessionUtils::load("id", true);  
+      }
+      if($additionalTag != null && strlen($additionalTag) > 0){
+        $cat_params[$additionalTag] = $additionalValue;
+      }
+
+      return App::getDB()->select("categories", "*", 
+            ["AND" =>
+                &$cat_params]
+        );
   }
 }
