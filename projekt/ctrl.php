@@ -55,7 +55,7 @@ App::getRouter()->go();
 /*
         - try and catch in all places with database
         - safeguarding to editing notes, categories, groups     -> done
-        - stronnicowanie rezultatów: notatki i grupy
+        - stronnicowanie rezultatów: notatki i grupy, użytkownicy       -> done
         - ograniczenie w liczbie tworzonych kategorii do 20     -> done
         - ajax
 */

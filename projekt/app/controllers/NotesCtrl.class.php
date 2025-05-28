@@ -15,6 +15,8 @@ class NotesCtrl {
       private $searchForm;
       private $noteForm;
       private $noteId;
+      private $currentPage = 0;
+      private $lastPage = 0;
 
   /* #region show notes list */
 
@@ -29,10 +31,13 @@ class NotesCtrl {
       $v = new Validator();
       $this->searchForm->title = $v->validateFromRequest("title");
       $this->searchForm->category = $v->validateFromRequest("category");
+      $this->currentPage = $v->validateFromRequest(param_name: "page");
+      if($this->currentPage == null){
+            $this->currentPage = 0;
+      }
   }
 
   function getRecords() {
-
       // filtering from title and category
       
       $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
@@ -45,16 +50,21 @@ class NotesCtrl {
 
       if(SessionUtils::load("groupId", true)){
             $search_params['isGroupNote'] = '1';
-            $search_params['owner_group'] = SessionUtils::load("groupId", true);  
+            $search_params['notes.owner_group'] = SessionUtils::load("groupId", true);  
       } else {
             $search_params['isGroupNote'] = '0';
-            $search_params['owner'] = SessionUtils::load("id", true);  
+            $search_params['notes.owner'] = SessionUtils::load("id", true);  
       }
+
       $where = ["AND" => &$search_params];
+      $this->lastPage = App::getDB()->count("notes", $where) / 30;
 
-
+      $where = ["AND" => &$search_params, "LIMIT" => [$this->currentPage*30, 30], "ORDER" => ['lastModified' => 'DESC']];
       $notesRecords = App::getDB()->select("notes", 
-      ["title", "content", "category", "creationDate", "lastModified", "id"], 
+            [
+                  "[>]categories" => ["category" => "id"]
+            ],
+      ["title", "content", "category", "creationDate", "lastModified", "notes.id", "categories.name"], 
             $where);
 
       $categoriesRecords = $this->getCategories();
@@ -64,12 +74,7 @@ class NotesCtrl {
             $note = array();
             $note["title"] = $noteRecord["title"];
             $note["content"] = mb_strimwidth($noteRecord["content"], 0, 40, '...');
-            
-            foreach( $categoriesRecords as $categoryRecord ) {
-                  if( $categoryRecord["id"] == $noteRecord["category"] ) {
-                        $note["category"] = $categoryRecord["name"];
-                  }
-            }
+            $note['category'] = $noteRecord['name'];
             $unixTime = strtotime($noteRecord["creationDate"]);
             $note["creationDate"] = date("d-m-Y", $unixTime);
             $unixTime = strtotime($noteRecord["lastModified"]);
@@ -80,6 +85,8 @@ class NotesCtrl {
 
       App::getSmarty()->assign("searchForm", $this->searchForm);
       App::getSmarty()->assign("records", $notes);
+      App::getSmarty()->assign("page", $this->currentPage);
+      App::getSmarty()->assign("lastPage", $this->lastPage);
       App::getSmarty()->assign("categories", $categoriesRecords);
   }
 
@@ -181,7 +188,7 @@ class NotesCtrl {
       }
       $params["id"] = $this->noteId;
 
-      $notes = App::getDB()->select("notes",[
+      $notes = App::getDB()->get("notes",[
         "title",
         "content",
         "category"
@@ -190,17 +197,13 @@ class NotesCtrl {
             $params
         ]);
         
-      if(count($notes) == 0){
+      if($notes == null){
             return false;
       }
-      
-      // There should be only one
-      foreach($notes as $note) {
-            $this->noteForm->title = $note["title"];
-            $this->noteForm->content = $note["content"];
-            $this->noteForm->category = $note["category"];
-      }
 
+      $this->noteForm->title = $notes["title"];
+      $this->noteForm->content = $notes["content"];
+      $this->noteForm->category = $notes["category"];
       return true;
   }
 

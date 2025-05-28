@@ -12,11 +12,12 @@ use core\Messages;
 class GroupsCtrl {
 
       private $searchName;
-      private $searchMember;
+      private $searchOwner;
       private $groupForm;
       private $userSearchMail;
-
       private $addedMember;
+      private $currentPage = 0;
+      private $lastPage = 0;
 
   /* #region show groups list */
 
@@ -30,8 +31,14 @@ class GroupsCtrl {
       $this->searchName = "";
       $v = new Validator();
       $this->searchName = $v->validateFromRequest("name");
+      $this->searchOwner = $v->validateFromRequest("owner");
+      $this->currentPage = $v->validateFromRequest("page");
+      if($this->currentPage == null){
+            $this->currentPage = 0;
+      }
 
-      $memberMail = $v->validateFromRequest("member");
+      App::getSmarty()->assign("searchName", $this->searchName);
+      App::getSmarty()->assign("searchOwner", $this->searchOwner);
   }
 
   function getRecords() {
@@ -39,12 +46,14 @@ class GroupsCtrl {
       
       $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
       if (isset($this->searchName) && strlen($this->searchName) > 0) {
-            $search_params['name[~]'] = $this->searchName . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
+            $search_params['groups.name[~]'] = $this->searchName . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
       }
+      if (isset($this->searchOwner) && strlen($this->searchOwner) > 0) {
+            $search_params['users.mail[~]'] = $this->searchOwner . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
+      }
+      $search_params['groups_has_users.users_id'] = SessionUtils::load("id", true); 
 
-      $search_params['users_id'] = SessionUtils::load("id", true);  
       $where = ["AND" => &$search_params];
-
       $database = App::getDB()->select("groups",
       [
             "[><]groups_has_users" => ["id" => "groups_id"],
@@ -54,9 +63,25 @@ class GroupsCtrl {
             "groups.name",
             "groups.owner",
             "users.mail"
-      ], ["groups_has_users.users_id" => SessionUtils::load("id", true)]);
+      ], $where);
+      $this->lastPage = count($database) / 9;
+
+      $where = ["AND" => &$search_params, "LIMIT" => [$this->currentPage*9, 9]];
+      $database = App::getDB()->select("groups",
+      [
+            "[><]groups_has_users" => ["id" => "groups_id"],
+            "[><]users" => ["owner" => "id"]
+      ], [
+            "groups.id",
+            "groups.name",
+            "groups.owner",
+            "users.mail"
+      ], $where);
+      
 
       App::getSmarty()->assign("records", $database);
+      App::getSmarty()->assign("page", $this->currentPage);
+      App::getSmarty()->assign("lastPage", $this->lastPage);
   }
 
   function generateListView() {
@@ -99,10 +124,7 @@ class GroupsCtrl {
         $groups = App::getDB()->select("groups", ["id"], 
         ["owner" => SessionUtils::load("id", true)]);
 
-        $lastGroupId = 0;
-        foreach($groups as $group){
-            $lastGroupId = $group["id"];
-        }
+        $lastGroupId = $groups[count($groups)-1]["id"];
 
         App::getDB()->insert("groups_has_users", [
             "users_id" => SessionUtils::load("id", true),
@@ -147,7 +169,7 @@ class GroupsCtrl {
             return false;
       }
 
-      $databaseCheck = App::getDB()->select("groups_has_users",
+      $databaseCheck = App::getDB()->get("groups_has_users",
       ["[><]groups" => ["groups_id" => "id"]],
       ["groups.name", "groups.owner"],
       ["AND" =>
@@ -155,13 +177,13 @@ class GroupsCtrl {
             "users_id" => SessionUtils::load("id", true)]
       ]);
 
-      if(count( $databaseCheck) == 0){
+      if($databaseCheck == null){
             return false;
       }
       
       SessionUtils::store("groupId", $groupId);
-      SessionUtils::store("groupName", $databaseCheck[0]["name"]);
-      SessionUtils::store("groupOwner", $databaseCheck[0]["owner"]);
+      SessionUtils::store("groupName", $databaseCheck["name"]);
+      SessionUtils::store("groupOwner", $databaseCheck["owner"]);
       return true;
   }
 
@@ -201,7 +223,7 @@ class GroupsCtrl {
             return false;
       }
       
-      $groups = App::getDB()->select("groups", 
+      $groups = App::getDB()->get("groups", 
       "*", 
       [
             "AND" =>
@@ -211,12 +233,12 @@ class GroupsCtrl {
             ]
         ]);
         
-      if(count($groups) == 0){
+      if($groups == null){
             return false;
       }
       
       // There should be only one
-      $this->groupForm->groupName = $groups[0]["name"];
+      $this->groupForm->groupName = $groups["name"];
 
       return true;
   }
@@ -265,17 +287,14 @@ class GroupsCtrl {
             return false;
         }
         
-      $groups = App::getDB()->select("groups", 
-      "*", 
+      if(!App::getDB()->has("groups",
       [
             "AND" =>
             [
             "id" => $this->groupForm->id,
             "owner" => SessionUtils::load("id", true)
             ]
-        ]);
-        
-      if(count($groups) == 0){
+        ])){
             return false;
       }
 
@@ -314,21 +333,22 @@ class GroupsCtrl {
             return false;
       }
       
-      $groups = App::getDB()->select("groups", 
-      "*", 
+      if(!App::getDB()->has("groups",
       [
             "AND" =>
             [
             "id" => $this->groupForm->id,
             "owner" => SessionUtils::load("id", true)
             ]
-        ]);
-        
-      if(count($groups) == 0){
+        ])){
             return false;
       }
 
       $this->userSearchMail = $v->validateFromRequest("mail");
+      $this->currentPage = $v->validateFromRequest("page");
+      if($this->currentPage == null){
+            $this->currentPage = 0;
+      }
 
       return true;
   }
@@ -336,37 +356,40 @@ class GroupsCtrl {
   function getAllUsers() {
       // filtering
 
-      $search_params = ["OR" => 
-            [
-            "groups_has_users.groups_id[!]" => $this->groupForm->id,
-            "groups_has_users.groups_id" => null
-            ]
-      ];
-
-      if (isset($this->userSearchMail) && strlen($this->userSearchMail) > 0) {
-            $search_params['users.mail[~]'] = $this->userSearchMail . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
-      }
-      $where = ["AND" => &$search_params];
-      
       $members = App::getDB()->select(
-      "users",
-      [ "[>]groups_has_users" => ["id" => "users_id"]],
-      ["users.id"], 
-      $where
+      "groups_has_users",
+      ["users_id"], 
+      ["groups_id" => $this->groupForm->id]
       );
-
+      
       $members_id = [];
       foreach($members as $member) {
-            $members_id[] = $member["id"];
+            $members_id[] = $member["users_id"];
       }
+
+      $search_params = [];
+      if (isset($this->userSearchMail) && strlen($this->userSearchMail) > 0) {
+            $search_params['mail[~]'] = $this->userSearchMail . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
+      }
+      $search_params['id[!]'] = $members_id;
+      $where = ["AND" => &$search_params];
 
       $uniqueMembers = App::getDB()->select(
       "users",
       ["id", "mail", "role"], 
-      ["id" => $members_id]
+      $where
       );
+      $this->lastPage = count($uniqueMembers) / 21;
       
+      $where = ["AND" => &$search_params, "LIMIT" => [$this->currentPage*21, 21]];
+      $uniqueMembers = App::getDB()->select(
+      "users",
+      ["id", "mail", "role"], 
+      $where
+      );
 
+      App::getSmarty()->assign("page", $this->currentPage);
+      App::getSmarty()->assign("lastPage", $this->lastPage);
       App::getSmarty()->assign("records", $uniqueMembers);
   }
 
@@ -401,29 +424,23 @@ class GroupsCtrl {
             return false;
       }
       
-      $groups = App::getDB()->select("groups", 
-      "*", 
+      if(!App::getDB()->has("groups",
       [
             "AND" =>
             [
             "id" => $this->groupForm->id,
             "owner" => SessionUtils::load("id", true)
             ]
-        ]);
-        
-      if(count($groups) == 0){
+        ])){
             return false;
       }
 
-      $groupMembership = App::getDB()->select( "groups_has_users",
-            "*",
+      if(!App::getDB()->has( "groups_has_users",
             ["AND" =>
             [
                   "groups_id" => $this->groupForm->id,
                   "users_id" => $this->addedMember
-            ]]);
-      
-      if(count($groupMembership) > 0){
+            ]])) {
             return false;
       }
 
@@ -471,29 +488,23 @@ class GroupsCtrl {
             return false;
       }
       
-      $groups = App::getDB()->select("groups", 
-      "*", 
+      if(!App::getDB()->has("groups", 
       [
             "AND" =>
             [
             "id" => $this->groupForm->id,
             "owner" => SessionUtils::load("id", true)
             ]
-        ]);
-        
-      if(count($groups) == 0){
+        ])){
             return false;
       }
 
-      $groupMembership = App::getDB()->select( "groups_has_users",
-            "*",
+      if(!App::getDB()->has( "groups_has_users",
             ["AND" =>
             [
                   "groups_id" => $this->groupForm->id,
                   "users_id" => $this->addedMember
-            ]]);
-      
-      if(count($groupMembership) == 0){
+            ]])){
             return false;
       }
 
@@ -509,7 +520,6 @@ class GroupsCtrl {
   }
   
   /* #endregion */
-
   
   /* #region delete group */
 
@@ -533,17 +543,14 @@ class GroupsCtrl {
             $this->redirectToListView();
       }
       
-      $groups = App::getDB()->select("groups", 
-      "*", 
+      if(!App::getDB()->has("groups", 
       [
             "AND" =>
             [
             "id" => $this->groupForm->id,
             "owner" => SessionUtils::load("id", true)
             ]
-        ]);
-        
-      if(count($groups) == 0){
+        ])){
             return false;
       }
 

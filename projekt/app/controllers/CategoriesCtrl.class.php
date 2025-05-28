@@ -109,17 +109,14 @@ class CategoriesCtrl {
                 return false;
         }
         
-        $categories = $this->getCategories("id", $this->categoryId);
+        $categories = $this->getCategories("id", $this->categoryId, true);
             
-        if(count($categories) == 0){
+        if($categories == null){
                 return false;
         }
         
-        // There should be only one
-        foreach($categories as $category) {
-                $this->form->name = $category["name"];
-                $this->form->color = $category["color"];
-        }
+        $this->form->name = $categories["name"];
+        $this->form->color = $categories["color"];
 
         return true;
     }
@@ -213,7 +210,7 @@ class CategoriesCtrl {
         App::getMessages()->addMessage($m);
   }
 
-  function getCategories($additionalTag, $additionalValue) {
+  function getCategories($additionalTag, $additionalValue, $one) {
     if(SessionUtils::load("groupId", true)){
             $cat_params['is_group_category'] = '1';
             $cat_params['owner_group'] = SessionUtils::load("groupId", true);  
@@ -224,10 +221,16 @@ class CategoriesCtrl {
       if($additionalTag != null && strlen($additionalTag) > 0){
         $cat_params[$additionalTag] = $additionalValue;
       }
-
+      if($one){
+      return App::getDB()->get("categories", "*", 
+            ["AND" =>
+                &$cat_params]
+        );
+      } else {
       return App::getDB()->select("categories", "*", 
             ["AND" =>
                 &$cat_params]
         );
+      }
   }
 }

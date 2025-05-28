@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-28 15:10:09
+/* Smarty version 5.4.5, created on 2025-05-28 17:47:27
   from 'file:GroupsList.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_68370b31e69286_65818776',
+  'unifunc' => 'content_6837300f39e1e9_87548317',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '9d2b46c6eaff4860ebdfba5e01e621d1b20d883f' => 
     array (
       0 => 'GroupsList.tpl',
-      1 => 1748437794,
+      1 => 1748447219,
       2 => 'file',
     ),
   ),
@@ -21,30 +21,30 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:messages.tpl' => 1,
   ),
 ))) {
-function content_68370b31e69286_65818776 (\Smarty\Template $_smarty_tpl) {
+function content_6837300f39e1e9_87548317 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_162533939568370b31e463c8_43290189', 'return_action');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_6751413636837300f371ae2_19767913', 'return_action');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_55020915168370b31e4bf94_98409242', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1556556896837300f377859_98581771', 'main_body');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_150271973668370b31e65714_76366148', "messages");
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_6434811946837300f39a4c3_63279533', "messages");
 ?>
 
 <?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, "main.tpl", $_smarty_current_dir);
 }
 /* {block 'return_action'} */
-class Block_162533939568370b31e463c8_43290189 extends \Smarty\Runtime\Block
+class Block_6751413636837300f371ae2_19767913 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
@@ -55,7 +55,7 @@ notesList">return</a></li><?php
 }
 /* {/block 'return_action'} */
 /* {block 'main_body'} */
-class Block_55020915168370b31e4bf94_98409242 extends \Smarty\Runtime\Block
+class Block_1556556896837300f377859_98581771 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
@@ -72,8 +72,8 @@ groupsList">
 "/>
                     </div>
                     <div class="single-welcome-hero-form">
-                        <h3>member</h3>
-                        <input type="text" name="member" value="<?php echo $_smarty_tpl->getValue('searchMember');?>
+                        <h3>owner</h3>
+                        <input type="text" name="owner" value="<?php echo $_smarty_tpl->getValue('searchOwner');?>
 "/>
                     </div>
                     <div class="welcome-hero-serch">
@@ -127,12 +127,47 @@ addGroup">
             </div>
 </div>
 
+<section id="list-topics" class="list-topics">
+			<div class="container">
+				<div class="list-topics-content">
+					<ul>
+						<li>
+                        <?php if ($_smarty_tpl->getValue('page') > 0) {?>
+							<a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+groupsList?page=<?php echo $_smarty_tpl->getValue('page')-1;?>
+&name=<?php echo $_smarty_tpl->getValue('searchName');?>
+&owner=<?php echo $_smarty_tpl->getValue('searchOwner');?>
+"><div class="single-list-topics-content">
+                                <div class="explore-map-icon">
+                                    <i data-feather="arrow-left"></i>
+                                </div>
+							</div></a>    
+                        <?php }?>
+						</li>
+						<li>
+                        <?php if ($_smarty_tpl->getValue('page') < $_smarty_tpl->getValue('lastPage')-1) {?>
+							<a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+groupsList?page=<?php echo $_smarty_tpl->getValue('page')+1;?>
+&name=<?php echo $_smarty_tpl->getValue('searchName');?>
+&owner=<?php echo $_smarty_tpl->getValue('searchOwner');?>
+"><div class="single-list-topics-content">
+                                <div class="explore-map-icon">
+                                    <i data-feather="arrow-right"></i>
+                                </div>
+							</div></a>
+                        <?php }?>         
+						</li>
+					</ul>
+				</div>
+			</div><!--/.container-->
+</section>
+
 <?php
 }
 }
 /* {/block 'main_body'} */
 /* {block "messages"} */
-class Block_150271973668370b31e65714_76366148 extends \Smarty\Runtime\Block
+class Block_6434811946837300f39a4c3_63279533 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';

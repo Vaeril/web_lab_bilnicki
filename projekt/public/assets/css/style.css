@@ -364,7 +364,7 @@ nav.navbar.bootsnav .navbar-toggle i{color: #ff545a;}
 --------------------------------------*/
 .list-topics-content {
     position: relative;
-    top: -98px;
+    top: 30px;
     z-index: 1;
 }
 .list-topics-content ul li { display: inline-block;}
@@ -374,8 +374,8 @@ nav.navbar.bootsnav .navbar-toggle i{color: #ff545a;}
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    width: 205px;
-    height: 170px;
+    width: 120px;
+    height: 60px;
     background:#fff;
     border-radius: 3px;
     margin-right: 20px;

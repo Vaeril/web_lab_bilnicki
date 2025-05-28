@@ -12,8 +12,8 @@
                         <input type="text" name="name" value="{$searchName}"/>
                     </div>
                     <div class="single-welcome-hero-form">
-                        <h3>member</h3>
-                        <input type="text" name="member" value="{$searchMember}"/>
+                        <h3>owner</h3>
+                        <input type="text" name="owner" value="{$searchOwner}"/>
                     </div>
                     <div class="welcome-hero-serch">
                         <button class="welcome-hero-btn" type="submit">
@@ -71,6 +71,33 @@
 
             </div>
 </div>
+
+<section id="list-topics" class="list-topics">
+			<div class="container">
+				<div class="list-topics-content">
+					<ul>
+						<li>
+                        {if $page > 0}
+							<a href="{$conf->action_url}groupsList?page={$page-1}&name={$searchName}&owner={$searchOwner}"><div class="single-list-topics-content">
+                                <div class="explore-map-icon">
+                                    <i data-feather="arrow-left"></i>
+                                </div>
+							</div></a>    
+                        {/if}
+						</li>
+						<li>
+                        {if $page < $lastPage - 1}
+							<a href="{$conf->action_url}groupsList?page={$page+1}&name={$searchName}&owner={$searchOwner}"><div class="single-list-topics-content">
+                                <div class="explore-map-icon">
+                                    <i data-feather="arrow-right"></i>
+                                </div>
+							</div></a>
+                        {/if}         
+						</li>
+					</ul>
+				</div>
+			</div><!--/.container-->
+</section>
 
 {/block}
 

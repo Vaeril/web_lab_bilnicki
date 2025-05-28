@@ -109,6 +109,33 @@
             </div>
 </div>
 
+<section id="list-topics" class="list-topics">
+			<div class="container">
+				<div class="list-topics-content">
+					<ul>
+						<li>
+                        {if $page > 0}
+							<a href="{$conf->action_url}notesList?page={$page-1}&title={$searchForm->title}&category={$searchForm->category}"><div class="single-list-topics-content">
+                                <div class="explore-map-icon">
+                                    <i data-feather="arrow-left"></i>
+                                </div>
+							</div></a>    
+                        {/if}
+						</li>
+						<li>
+                        {if $page < $lastPage - 1}
+							<a href="{$conf->action_url}notesList?page={$page+1}&title={$searchForm->title}&category={$searchForm->category}"><div class="single-list-topics-content">
+                                <div class="explore-map-icon">
+                                    <i data-feather="arrow-right"></i>
+                                </div>
+							</div></a>
+                        {/if}         
+						</li>
+					</ul>
+				</div>
+			</div><!--/.container-->
+</section>
+
 {/block}
 
 {block name="messages"}

@@ -50,8 +50,7 @@ class LoginCtrl {
             "email" => true,
             "validator_message" => "Use proper email adress"]);
 
-    $database_user = App::getDB()->select("users", "*", ["mail" => $this->registerForm->email]);
-    if(count($database_user) > 0){
+    if(App::getDB()->has("users", ["mail" => $this->registerForm->email])){
         $this->redirectToLoginFromRegister();
     }
 
@@ -95,10 +94,9 @@ class LoginCtrl {
         "role" => $this->registerForm->role
         ]);
         
-        $database_user = App::getDB()->select("users", ["id"], ["mail" => $this->registerForm->email]);
-        foreach($database_user as $user){
-             $this->loginForm->id = $user["id"];
-        }
+        $database_user = App::getDB()->get("users", ["id"], ["mail" => $this->registerForm->email]);
+        $this->loginForm->id = $database_user["id"];
+        
 
         App::getDB()->insert("categories",[
         "name" => "no category",
@@ -153,8 +151,7 @@ class LoginCtrl {
         return false;
     }
 
-    $database_user = App::getDB()->select("users", "*", ["mail" => $this->loginForm->email]);
-    if(count($database_user) == 0){
+    if(!App::getDB()->has("users", ["mail" => $this->loginForm->email])){
         $m = new Message("There is no such user", "error");
         App::getMessages()->addMessage($m);
         return false;
@@ -170,16 +167,14 @@ class LoginCtrl {
     }
 
 
-    $database_user = App::getDB()->select("users", "*", ["mail" => $this->loginForm->email, "password" => $this->loginForm->password]);
-    if(count($database_user) == 0){
+    $database_user = App::getDB()->get("users", "*", ["mail" => $this->loginForm->email, "password" => $this->loginForm->password]);
+    if($database_user == null){
         $m = new Message("Password incorrect", "error");
         App::getMessages()->addMessage($m);
         return false;
     } else {
-        foreach($database_user as $user){
-            $this->loginForm->role = $user["role"];
-            $this->loginForm->id = $user["id"];
-        }
+        $this->loginForm->role = $database_user["role"];
+        $this->loginForm->id = $database_user["id"];
     }
     return true;
   }
