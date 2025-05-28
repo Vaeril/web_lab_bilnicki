@@ -28,15 +28,6 @@ class LoginCtrl {
         }
   }
 
-  public function action_login() {
-    if($this->validateLogin()){
-        $this->proceedAfterLogin();
-    } else {
-        App::getSmarty()->assign("loginForm", $this->loginForm);
-        App::getSmarty()->display("Login.tpl");
-    }
-  }
-
   // Register
 
   function validateRegister() {
@@ -104,9 +95,9 @@ class LoginCtrl {
         "role" => $this->registerForm->role
         ]);
         
-        $database_user = App::getDB()->select("users", "*", ["mail" => $this->registerForm->email]);
+        $database_user = App::getDB()->select("users", ["id"], ["mail" => $this->registerForm->email]);
         foreach($database_user as $user){
-            $this->loginForm->id = $database_user["id"];
+             $this->loginForm->id = $user["id"];
         }
 
         App::getDB()->insert("categories",[
@@ -132,6 +123,15 @@ class LoginCtrl {
   }
 
   // Login
+
+  public function action_login() {
+    if($this->validateLogin()){
+        $this->proceedAfterLogin();
+    } else {
+        App::getSmarty()->assign("loginForm", $this->loginForm);
+        App::getSmarty()->display("Login.tpl");
+    }
+  }
 
   function validateLogin() {
     $this->loginForm = new LoginForm();

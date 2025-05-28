@@ -14,8 +14,11 @@ class GroupsCtrl {
       private $searchName;
       private $searchMember;
       private $groupForm;
+      private $userSearchMail;
 
-  // show groups list
+      private $addedMember;
+
+  /* #region show groups list */
 
   public function action_groupsList() {
       $this->validateList();
@@ -60,7 +63,9 @@ class GroupsCtrl {
         App::getSmarty()->display("GroupsList.tpl");
   }
 
-  // add group
+  /* #endregion */
+  
+  /* #region add group */
 
   public function action_addGroup() {
       if($this->validateAddingGroup()){
@@ -73,6 +78,7 @@ class GroupsCtrl {
 
   function validateAddingGroup() {
         $v = new Validator();
+        $this->groupForm = new GroupForm();
 
         $this->groupForm->groupName = $v->validateFromRequest("name", 
         ["required" => true]);
@@ -119,7 +125,9 @@ class GroupsCtrl {
       App::getRouter()->redirectTo("groupsList");
   }
 
-  // enter group space
+  /* #endregion */
+  
+  /* #region enter group space */
 
   function action_enterGroupSpace() {
       if($this->validateEntering()){
@@ -141,7 +149,7 @@ class GroupsCtrl {
 
       $databaseCheck = App::getDB()->select("groups_has_users",
       ["[><]groups" => ["groups_id" => "id"]],
-      ["groups.name"],
+      ["groups.name", "groups.owner"],
       ["AND" =>
             ["groups_id" => $groupId,
             "users_id" => SessionUtils::load("id", true)]
@@ -153,17 +161,24 @@ class GroupsCtrl {
       
       SessionUtils::store("groupId", $groupId);
       SessionUtils::store("groupName", $databaseCheck[0]["name"]);
+      SessionUtils::store("groupOwner", $databaseCheck[0]["owner"]);
       return true;
   }
 
-  // exit group space
+  /* #endregion */
+  
+  /* #region exit group space */
 
   function action_exitGroupSpace() {
       SessionUtils::remove("groupId");
+      SessionUtils::remove("groupName");
+      SessionUtils::remove("groupOwner");
       App::getRouter()->redirectTo("groupsList");
   }
 
-  // edit groups
+  /* #endregion */
+  
+  /* #region edit groups */
 
   function action_editGroup() {
       if($this->validateEditGroup()){
@@ -219,7 +234,9 @@ class GroupsCtrl {
       App::getSmarty()->assign("records", $members);
   }
 
-  // save group
+  /* #endregion */
+  
+  /* #region save group */
 
   function action_saveGroup() {
       if($this->validateSaveGroup()){
@@ -247,6 +264,20 @@ class GroupsCtrl {
         if($v->isLastOK() == false){
             return false;
         }
+        
+      $groups = App::getDB()->select("groups", 
+      "*", 
+      [
+            "AND" =>
+            [
+            "id" => $this->groupForm->id,
+            "owner" => SessionUtils::load("id", true)
+            ]
+        ]);
+        
+      if(count($groups) == 0){
+            return false;
+      }
 
         return true;
   }
@@ -257,52 +288,285 @@ class GroupsCtrl {
             ["id" => $this->groupForm->id]);
   }
 
-  // add member
+  /* #endregion */
+  
+  /* #region choose member */
+
+  function action_chooseMember() {
+      if($this->validateChooseMember()){
+            $this->getAllUsers();
+            App::getSmarty()->assign("searchMail", $this->userSearchMail);
+            App::getSmarty()->assign("form", $this->groupForm);
+            App::getSmarty()->display("ChooseMember.tpl");
+      } else {
+            $this->redirectToListView();
+      }
+  }
+
+  function validateChooseMember() {
+      $v = new Validator();
+      $this->groupForm = new GroupForm();
+      
+      $this->groupForm->id = $v->validateFromRequest("id", 
+      ["required" => true, "required_message" => "System error"]);
+
+      if($v->isLastOK() == false){
+            return false;
+      }
+      
+      $groups = App::getDB()->select("groups", 
+      "*", 
+      [
+            "AND" =>
+            [
+            "id" => $this->groupForm->id,
+            "owner" => SessionUtils::load("id", true)
+            ]
+        ]);
+        
+      if(count($groups) == 0){
+            return false;
+      }
+
+      $this->userSearchMail = $v->validateFromRequest("mail");
+
+      return true;
+  }
+
+  function getAllUsers() {
+      // filtering
+
+      $search_params = ["OR" => 
+            [
+            "groups_has_users.groups_id[!]" => $this->groupForm->id,
+            "groups_has_users.groups_id" => null
+            ]
+      ];
+
+      if (isset($this->userSearchMail) && strlen($this->userSearchMail) > 0) {
+            $search_params['users.mail[~]'] = $this->userSearchMail . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
+      }
+      $where = ["AND" => &$search_params];
+      
+      $members = App::getDB()->select(
+      "users",
+      [ "[>]groups_has_users" => ["id" => "users_id"]],
+      ["users.id"], 
+      $where
+      );
+
+      $members_id = [];
+      foreach($members as $member) {
+            $members_id[] = $member["id"];
+      }
+
+      $uniqueMembers = App::getDB()->select(
+      "users",
+      ["id", "mail", "role"], 
+      ["id" => $members_id]
+      );
+      
+
+      App::getSmarty()->assign("records", $uniqueMembers);
+  }
+
+  /* #endregion */
+  
+  /* #region add member */
 
   function action_addMember() {
       if($this->validateAddMember()){
-            App::getSmarty()->assign("form", $this->groupForm);
-            App::getSmarty()->display("AddMember.tpl");
+            $this->addNewMember();
+            $this->redirectToEditGroup();
+      } else {
+            $this->redirectToEditGroup();
       }
   }
 
   function validateAddMember() {
-        $v = new Validator();
-        $this->groupForm = new GroupForm();
-        
-        $this->groupForm->id = $v->validateFromRequest("id", 
-        ["required" => true, "required_message" => "System error"]);
-        if($v->isLastOK() == false){
-            $this->redirectToListView();
-        }
+      $v = new Validator();
+      $this->groupForm = new GroupForm();
+      
+      $this->groupForm->id = $v->validateFromCleanURL(1, 
+      ["required" => true, "required_message" => "System error"]);
 
-        return true;
-  }
-
-  // delete Note
-
-  function action_deleteNote() {
-      if($this->validateDeleteNote()){
-            App::getDB()->delete("notes", [
-                  "id" => $this->groupForm->id
-            ]);
-        $m = new Message("Group deleted successfully", "info");
-        App::getMessages()->addMessage($m);
+      if($v->isLastOK() == false){
+            $this->redirectToEditGroup();
       }
       
-      App::getRouter()->forwardTo('notesList');
-  }
+      $this->addedMember = $v->validateFromCleanURL(2, 
+      ["required" => true, "required_message" => "System error"]);
 
-  function validateDeleteNote() {
-      $v = new Validator();
-
-      $this->noteId = $v->validateFromCleanURL(1, 
-        ["required" => true, "required_message" => "System error"]);
-        
       if($v->isLastOK() == false){
+            return false;
+      }
+      
+      $groups = App::getDB()->select("groups", 
+      "*", 
+      [
+            "AND" =>
+            [
+            "id" => $this->groupForm->id,
+            "owner" => SessionUtils::load("id", true)
+            ]
+        ]);
+        
+      if(count($groups) == 0){
+            return false;
+      }
+
+      $groupMembership = App::getDB()->select( "groups_has_users",
+            "*",
+            ["AND" =>
+            [
+                  "groups_id" => $this->groupForm->id,
+                  "users_id" => $this->addedMember
+            ]]);
+      
+      if(count($groupMembership) > 0){
             return false;
       }
 
       return true;
   }
+
+  function addNewMember() {
+      App::getDB()->insert("groups_has_users",
+      ["groups_id" => $this->groupForm->id,
+      "users_id" => $this->addedMember]);
+  }
+
+  function redirectToEditGroup() {
+      App::getRouter()->redirectTo("editGroup/".$this->groupForm->id);
+  }
+  
+  /* #endregion */
+  
+  /* #region delete member */
+
+  function action_removeMember() {
+      if($this->validateRemoveMember()){
+            $this->removeMember();
+            $this->redirectToEditGroup();
+      } else {
+            $this->redirectToEditGroup();
+      }
+  }
+
+  function validateRemoveMember() {
+      $v = new Validator();
+      $this->groupForm = new GroupForm();
+      
+      $this->groupForm->id = $v->validateFromCleanURL(1, 
+      ["required" => true, "required_message" => "System error"]);
+
+      if($v->isLastOK() == false){
+            $this->redirectToListView();
+      }
+      
+      $this->addedMember = $v->validateFromCleanURL(2, 
+      ["required" => true, "required_message" => "System error"]);
+
+      if($v->isLastOK() == false){
+            return false;
+      }
+      
+      $groups = App::getDB()->select("groups", 
+      "*", 
+      [
+            "AND" =>
+            [
+            "id" => $this->groupForm->id,
+            "owner" => SessionUtils::load("id", true)
+            ]
+        ]);
+        
+      if(count($groups) == 0){
+            return false;
+      }
+
+      $groupMembership = App::getDB()->select( "groups_has_users",
+            "*",
+            ["AND" =>
+            [
+                  "groups_id" => $this->groupForm->id,
+                  "users_id" => $this->addedMember
+            ]]);
+      
+      if(count($groupMembership) == 0){
+            return false;
+      }
+
+      return true;
+  }
+
+  function removeMember() {
+      App::getDB()->delete("groups_has_users", [
+            "AND" =>
+            ["groups_id" => $this->groupForm->id,
+            "users_id" => $this->addedMember]
+      ]);
+  }
+  
+  /* #endregion */
+
+  
+  /* #region delete group */
+
+  function action_deleteGroup() {
+      if($this->validateDeleteGroup()){
+            $this->deleteGroup();
+            $this->redirectToListView();
+      } else {
+            $this->redirectToListView();
+      }
+  }
+
+  function validateDeleteGroup() {
+      $v = new Validator();
+      $this->groupForm = new GroupForm();
+      
+      $this->groupForm->id = $v->validateFromRequest("id", 
+      ["required" => true, "required_message" => "System error"]);
+
+      if($v->isLastOK() == false){
+            $this->redirectToListView();
+      }
+      
+      $groups = App::getDB()->select("groups", 
+      "*", 
+      [
+            "AND" =>
+            [
+            "id" => $this->groupForm->id,
+            "owner" => SessionUtils::load("id", true)
+            ]
+        ]);
+        
+      if(count($groups) == 0){
+            return false;
+      }
+
+      return true;
+  }
+
+  function deleteGroup() {
+      App::getDB()->delete("groups_has_users", [
+            "groups_id" => $this->groupForm->id
+      ]);
+      App::getDB()->delete("notes", where: [
+            "AND" =>
+            ["isGroupNote" => 1,
+            "owner_group" => $this->groupForm->id]
+      ]);
+      App::getDB()->delete("categories", [
+            "AND" =>
+            ["is_group_category" => 1,
+            "owner_group" => $this->groupForm->id]
+      ]);
+      App::getDB()->delete("groups",
+      ["id" => $this->groupForm->id]);
+  }
+  
+  /* #endregion */
 }

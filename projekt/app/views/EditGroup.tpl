@@ -51,7 +51,7 @@
                                     <div class="col-sm-7">
                                         <div class="explore-map-icon">
                                         {if $r["owner"] != $r["id"]}
-                                            <a href="{$conf->action_url}removeUser/{$r['id']}/{$form->id}"><i data-feather="trash"></i></a>
+                                            <a href="{$conf->action_url}removeMember/{$form->id}/{$r['id']}"><i data-feather="trash"></i></a>
                                             {/if}
                                         </div>
                                     </div>
@@ -65,7 +65,7 @@
 
                 <div class="row">
                 <div class=" col-md-4 col-sm-6">
-                <form action="{$conf->action_url}addMember">
+                <form action="{$conf->action_url}chooseMember">
                     <button class="welcome-hero-btn" type="submit">
                         + new member
                     </button>
@@ -76,6 +76,24 @@
 
             </div>
 </div>
+
+                <form action="{$conf->action_url}deleteGroup" method="POST">
+
+					<div class="subscribe-title text-center"></div>
+					<div class="subscribe-title text-center"></div>
+					<div class="subscribe-title text-center"></div>
+					<div class="subscribe-title text-center"></div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="subscription-input-group">
+								<button class="appsLand-btn subscribe-btn" type="submit">
+									DELETE GROUP
+								</button>
+							</div>
+						</div>	
+					</div>
+                <input type="hidden" name="id" value="{$form->id}">
+				</form>
 
 {/block}
 

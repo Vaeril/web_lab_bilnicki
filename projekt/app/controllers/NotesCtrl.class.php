@@ -16,7 +16,7 @@ class NotesCtrl {
       private $noteForm;
       private $noteId;
 
-  // show notes list
+  /* #region show notes list */
 
   public function action_notesList() {
       $this->validateList();
@@ -87,7 +87,9 @@ class NotesCtrl {
         App::getSmarty()->display("NotesList.tpl");
   }
 
-  // add note
+  /* #endregion */
+  
+  /* #region add note */
 
   public function action_addNote() {
       App::getSmarty()->assign("categories", $this->getCategories());
@@ -142,7 +144,9 @@ class NotesCtrl {
       App::getRouter()->redirectTo("notesList");
   }
 
-  // edit note
+  /* #endregion */
+  
+  /* #region edit note */
 
   function action_editNote() {
       if($this->validateEditNote()){
@@ -167,12 +171,23 @@ class NotesCtrl {
             return false;
       }
       
+      $params = [];
+      if(SessionUtils::load("groupId", true)){
+            $params['isGroupNote'] = '1';
+            $params['owner_group'] = SessionUtils::load("groupId", true);  
+      } else {
+            $params['isGroupNote'] = '0';
+            $params['owner'] = SessionUtils::load("id", true);  
+      }
+      $params["id"] = $this->noteId;
+
       $notes = App::getDB()->select("notes",[
         "title",
         "content",
         "category"
         ], [
-            "id" => $this->noteId
+            "AND" =>
+            $params
         ]);
         
       if(count($notes) == 0){
@@ -189,7 +204,9 @@ class NotesCtrl {
       return true;
   }
 
-  // save note
+  /* #endregion */
+  
+  /* #region save note */
 
   function action_saveNote() {
       if($this->validateSaveNote()){
@@ -233,7 +250,9 @@ class NotesCtrl {
             ["id" => $this->noteId]);
   }
 
-  // delete Note
+  /* #endregion */
+  
+  /* #region delete note */
 
   function action_deleteNote() {
       if($this->validateDeleteNote()){
@@ -274,4 +293,6 @@ class NotesCtrl {
                 &$cat_params]
         );
   }
+  
+  /* #endregion */
 }

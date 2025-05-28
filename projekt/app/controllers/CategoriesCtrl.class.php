@@ -22,7 +22,9 @@ class CategoriesCtrl {
     }
 
     function getRecords() {
-        App::getSmarty()->assign("records", $this->getCategories(null, null));
+        $categories = $this->getCategories(null, null);
+        App::getSmarty()->assign("records", $categories);
+        App::getSmarty()->assign("recordsNumber", count($categories));
     }
 
     function generateListView() {
@@ -32,7 +34,7 @@ class CategoriesCtrl {
     // add category
 
     public function action_addCategory() {
-        if($this->validate()){
+        if($this->validateAddCategory()){
             $this->saveNewCategory();
             $this->redirectToList();
         } else {
@@ -41,7 +43,7 @@ class CategoriesCtrl {
         }
     }
 
-    function validate() {
+    function validateAddCategory() {
         $this->form = new CategoryForm();
         $v = new Validator();
 
@@ -50,6 +52,12 @@ class CategoriesCtrl {
         $this->form->name = $v->validateFromRequest("name", 
         ["required" => true, "required_message" => "Category must have a name"]);
         if($v->isLastOK() == false){
+            return false;
+        }
+
+        if(count($this->getCategories(null, null)) >= 20){
+            $m = new Message("You can have a max of 20 categories", "error");
+            App::getMessages()->addMessage($m);
             return false;
         }
 

@@ -41,10 +41,12 @@
                                         <p>     owner: {$r["mail"]}   </p>
                                     </div>
                                     <div class="col-sm-7">
+                                    
+                                    {if ({$r['owner']} == \core\SessionUtils::load("id", true))}
                                         <div class="explore-map-icon">
                                             <a href="{$conf->action_url}editGroup/{$r['id']}"><i data-feather="edit-2"></i></a>
-                                            <a href="{$conf->action_url}deleteGroup/{$r['id']}"><i data-feather="trash"></i></a>
                                         </div>
+                                    {/if}
                                     </div>
                                 </div>
                             </div>
