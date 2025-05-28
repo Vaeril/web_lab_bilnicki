@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-28 19:32:02
+/* Smarty version 5.4.5, created on 2025-05-28 19:54:07
   from 'file:EditGroup.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_68374892d3b991_27525501',
+  'unifunc' => 'content_68374dbf29c291_49661633',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'b5fda8c2cb6b388cf26f3a4b9bed508525c72c3f' => 
     array (
       0 => 'EditGroup.tpl',
-      1 => 1748453519,
+      1 => 1748454843,
       2 => 'file',
     ),
   ),
@@ -21,30 +21,30 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:messages.tpl' => 1,
   ),
 ))) {
-function content_68374892d3b991_27525501 (\Smarty\Template $_smarty_tpl) {
+function content_68374dbf29c291_49661633 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_195730007168374892d10be4_15520100', 'return_action');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_31205033368374dbf273733_69233553', 'return_action');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_209320565268374892d16ce4_53651110', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_103197696668374dbf278e19_49992122', 'main_body');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_147996769468374892d37f01_20634980', "messages");
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_170606167768374dbf298b58_57088793', "messages");
 ?>
 
 <?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, "main.tpl", $_smarty_current_dir);
 }
 /* {block 'return_action'} */
-class Block_195730007168374892d10be4_15520100 extends \Smarty\Runtime\Block
+class Block_31205033368374dbf273733_69233553 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
@@ -55,7 +55,7 @@ groupsList">return</a></li><?php
 }
 /* {/block 'return_action'} */
 /* {block 'main_body'} */
-class Block_209320565268374892d16ce4_53651110 extends \Smarty\Runtime\Block
+class Block_103197696668374dbf278e19_49992122 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
@@ -129,8 +129,8 @@ chooseMember">
             </div>
 </div>
 
-                <form
-                 method="POST">
+                <form action="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
+deleteGroup" method="POST">
 
 					<div class="subscribe-title text-center"></div>
 					<div class="subscribe-title text-center"></div>
@@ -139,16 +139,14 @@ chooseMember">
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="subscription-input-group">
-								<button class="appsLand-btn subscribe-btn" 
-                                
-                onclick="confirmLink('<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-deleteGroup/<?php echo $_smarty_tpl->getValue('form')->id;?>
-','Do you really want to delete this group?')">
+								<button class="appsLand-btn subscribe-btn" type="submit">
 									DELETE GROUP
 								</button>
 							</div>
 						</div>	
 					</div>
+                <input type="hidden" name="id" value="<?php echo $_smarty_tpl->getValue('form')->id;?>
+">
 				</form>
 
 <?php
@@ -156,7 +154,7 @@ deleteGroup/<?php echo $_smarty_tpl->getValue('form')->id;?>
 }
 /* {/block 'main_body'} */
 /* {block "messages"} */
-class Block_147996769468374892d37f01_20634980 extends \Smarty\Runtime\Block
+class Block_170606167768374dbf298b58_57088793 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
