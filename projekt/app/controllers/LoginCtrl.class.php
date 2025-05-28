@@ -50,9 +50,15 @@ class LoginCtrl {
             "email" => true,
             "validator_message" => "Use proper email adress"]);
 
-    if(App::getDB()->has("users", ["mail" => $this->registerForm->email])){
-        $this->redirectToLoginFromRegister();
-    }
+      try{
+        if(App::getDB()->has("users", ["mail" => $this->registerForm->email])){
+            $this->redirectToLoginFromRegister();
+        }
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+            return false;
+      }
 
     $this->registerForm->password = $v->validateFromRequest("password",
             ["required" => true,
@@ -88,22 +94,27 @@ class LoginCtrl {
   }
 
   function saveNewUser() {
-        App::getDB()->insert("users",[
-        "mail" => $this->registerForm->email,
-        "password" => $this->registerForm->password,
-        "role" => $this->registerForm->role
-        ]);
-        
-        $database_user = App::getDB()->get("users", ["id"], ["mail" => $this->registerForm->email]);
-        $this->loginForm->id = $database_user["id"];
-        
+    try{
+            App::getDB()->insert("users",[
+            "mail" => $this->registerForm->email,
+            "password" => $this->registerForm->password,
+            "role" => $this->registerForm->role
+            ]);
+            
+            $database_user = App::getDB()->get("users", ["id"], ["mail" => $this->registerForm->email]);
+            $this->loginForm->id = $database_user["id"];
+            
 
-        App::getDB()->insert("categories",[
-        "name" => "no category",
-        "color" => "red",
-        "owner" => $this->loginForm->id,
-        "is_group_category" => 0
-        ]);
+            App::getDB()->insert("categories",[
+            "name" => "no category",
+            "color" => "red",
+            "owner" => $this->loginForm->id,
+            "is_group_category" => 0
+            ]);
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+      }
   }
 
   function returnToRegister() {
@@ -151,30 +162,35 @@ class LoginCtrl {
         return false;
     }
 
-    if(!App::getDB()->has("users", ["mail" => $this->loginForm->email])){
-        $m = new Message("There is no such user", "error");
-        App::getMessages()->addMessage($m);
-        return false;
-    }
+    try{
+            if(!App::getDB()->has("users", ["mail" => $this->loginForm->email])){
+                $m = new Message("There is no such user", "error");
+                App::getMessages()->addMessage($m);
+                return false;
+            }
 
-    $this->loginForm->password = $v->validateFromRequest("password",
-            ["required" => true,
-            "required_message" => 'Provide password']);
+            $this->loginForm->password = $v->validateFromRequest("password",
+                    ["required" => true,
+                    "required_message" => 'Provide password']);
+                    
             
-    
-    if(!($v->isLastOK())){
-        return false;
-    }
+            if(!($v->isLastOK())){
+                return false;
+            }
 
 
-    $database_user = App::getDB()->get("users", "*", ["mail" => $this->loginForm->email, "password" => $this->loginForm->password]);
-    if($database_user == null){
-        $m = new Message("Password incorrect", "error");
+            $database_user = App::getDB()->get("users", "*", ["mail" => $this->loginForm->email, "password" => $this->loginForm->password]);
+            if($database_user == null){
+                $m = new Message("Password incorrect", "error");
+                App::getMessages()->addMessage($m);
+                return false;
+            } else {
+                $this->loginForm->role = $database_user["role"];
+                $this->loginForm->id = $database_user["id"];
+            }
+    } catch (\PDOException $e) {
+        $m = new Message("Connection error", "error");
         App::getMessages()->addMessage($m);
-        return false;
-    } else {
-        $this->loginForm->role = $database_user["role"];
-        $this->loginForm->id = $database_user["id"];
     }
     return true;
   }

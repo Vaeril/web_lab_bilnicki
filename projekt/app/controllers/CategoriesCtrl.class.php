@@ -22,7 +22,7 @@ class CategoriesCtrl {
     }
 
     function getRecords() {
-        $categories = $this->getCategories(null, null);
+        $categories = $this->getCategories(null, null, false);
         App::getSmarty()->assign("records", $categories);
         App::getSmarty()->assign("recordsNumber", count($categories));
     }
@@ -55,7 +55,7 @@ class CategoriesCtrl {
             return false;
         }
 
-        if(count($this->getCategories(null, null)) >= 20){
+        if(count($this->getCategories(null, null, false)) >= 20){
             $m = new Message("You can have a max of 20 categories", "error");
             App::getMessages()->addMessage($m);
             return false;
@@ -75,8 +75,12 @@ class CategoriesCtrl {
                 $cat_params['is_group_category'] = '0';
                 $cat_params['owner'] = SessionUtils::load("id", true);  
         }
-
-        App::getDB()->insert("categories", $cat_params);
+        try{
+            App::getDB()->insert("categories", $cat_params);
+        } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+        }
     }
 
     function redirectToList() {
@@ -134,10 +138,15 @@ class CategoriesCtrl {
     }
 
     function saveCategory() {
+        try{
         App::getDB()->update("categories", [
             "name"=> $this->form->name,
             "color"=> $this->form->color],
             ["id"=> $this->categoryId]);
+        } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+        }
     }
 
     function validateSaveCategory() {
@@ -187,27 +196,32 @@ class CategoriesCtrl {
   function deleteCategory() {
         $newCategory = $this->categoryId - 1;
 
-        $categoriesRecords = $this->getCategories("id", $newCategory);
+        $categoriesRecords = $this->getCategories("id", $newCategory, false);
 
         while(count($categoriesRecords) == 0){
             $newCategory = $newCategory - 1;
-            $categoriesRecords = $this->getCategories("id", $newCategory);
+            $categoriesRecords = $this->getCategories("id", $newCategory, false);
 
             if($newCategory <= 0)
                 return false;
         }
 
-        App::getDB()->update("notes", [
-        "category" => $newCategory
-        ], 
-        ["category" => $this->categoryId]);
-
+        try{
+            App::getDB()->update("notes", [
+            "category" => $newCategory
+            ], 
+            ["category" => $this->categoryId]);
 
             App::getDB()->delete("categories", [
-                  "id" => $this->categoryId
+                    "id" => $this->categoryId
             ]);
-        $m = new Message("Category deleted successfully", "info");
-        App::getMessages()->addMessage($m);
+            $m = new Message("Category deleted successfully", "info");
+            App::getMessages()->addMessage($m);
+            
+        } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+        }
   }
 
   function getCategories($additionalTag, $additionalValue, $one) {
@@ -221,16 +235,21 @@ class CategoriesCtrl {
       if($additionalTag != null && strlen($additionalTag) > 0){
         $cat_params[$additionalTag] = $additionalValue;
       }
-      if($one){
-      return App::getDB()->get("categories", "*", 
-            ["AND" =>
-                &$cat_params]
-        );
-      } else {
-      return App::getDB()->select("categories", "*", 
-            ["AND" =>
-                &$cat_params]
-        );
-      }
+        try{
+            if($one){
+            return App::getDB()->get("categories", "*", 
+                    ["AND" =>
+                        &$cat_params]
+                );
+            } else {
+            return App::getDB()->select("categories", "*", 
+                    ["AND" =>
+                        &$cat_params]
+                );
+            }
+        } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+        }
   }
 }

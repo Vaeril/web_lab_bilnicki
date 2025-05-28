@@ -42,41 +42,46 @@ class GroupsCtrl {
   }
 
   function getRecords() {
-      // filtering from title and category
-      
-      $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
-      if (isset($this->searchName) && strlen($this->searchName) > 0) {
-            $search_params['groups.name[~]'] = $this->searchName . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
-      }
-      if (isset($this->searchOwner) && strlen($this->searchOwner) > 0) {
-            $search_params['users.mail[~]'] = $this->searchOwner . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
-      }
-      $search_params['groups_has_users.users_id'] = SessionUtils::load("id", true); 
+      try{
+            // filtering from title and category
+            
+            $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
+            if (isset($this->searchName) && strlen($this->searchName) > 0) {
+                  $search_params['groups.name[~]'] = $this->searchName . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
+            }
+            if (isset($this->searchOwner) && strlen($this->searchOwner) > 0) {
+                  $search_params['users.mail[~]'] = $this->searchOwner . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
+            }
+            $search_params['groups_has_users.users_id'] = SessionUtils::load("id", true); 
 
-      $where = ["AND" => &$search_params];
-      $database = App::getDB()->select("groups",
-      [
-            "[><]groups_has_users" => ["id" => "groups_id"],
-            "[><]users" => ["owner" => "id"]
-      ], [
-            "groups.id",
-            "groups.name",
-            "groups.owner",
-            "users.mail"
-      ], $where);
-      $this->lastPage = count($database) / 9;
+            $where = ["AND" => &$search_params];
+            $database = App::getDB()->select("groups",
+            [
+                  "[><]groups_has_users" => ["id" => "groups_id"],
+                  "[><]users" => ["owner" => "id"]
+            ], [
+                  "groups.id",
+                  "groups.name",
+                  "groups.owner",
+                  "users.mail"
+            ], $where);
+            $this->lastPage = count($database) / 9;
 
-      $where = ["AND" => &$search_params, "LIMIT" => [$this->currentPage*9, 9]];
-      $database = App::getDB()->select("groups",
-      [
-            "[><]groups_has_users" => ["id" => "groups_id"],
-            "[><]users" => ["owner" => "id"]
-      ], [
-            "groups.id",
-            "groups.name",
-            "groups.owner",
-            "users.mail"
-      ], $where);
+            $where = ["AND" => &$search_params, "LIMIT" => [$this->currentPage*9, 9]];
+            $database = App::getDB()->select("groups",
+            [
+                  "[><]groups_has_users" => ["id" => "groups_id"],
+                  "[><]users" => ["owner" => "id"]
+            ], [
+                  "groups.id",
+                  "groups.name",
+                  "groups.owner",
+                  "users.mail"
+            ], $where);
+      } catch (\PDOException $e) {
+      $m = new Message("Connection error", "error");
+      App::getMessages()->addMessage($m);
+      }
       
 
       App::getSmarty()->assign("records", $database);
@@ -116,27 +121,32 @@ class GroupsCtrl {
   }
 
   function saveNewGroup() {
-        App::getDB()->insert("groups",[
-        "name" => $this->groupForm->groupName,
-        "owner" => SessionUtils::load("id", true)
-        ]);
+            try{
+            App::getDB()->insert("groups",[
+            "name" => $this->groupForm->groupName,
+            "owner" => SessionUtils::load("id", true)
+            ]);
 
-        $groups = App::getDB()->select("groups", ["id"], 
-        ["owner" => SessionUtils::load("id", true)]);
+            $groups = App::getDB()->select("groups", ["id"], 
+            ["owner" => SessionUtils::load("id", true)]);
 
-        $lastGroupId = $groups[count($groups)-1]["id"];
+            $lastGroupId = $groups[count($groups)-1]["id"];
 
-        App::getDB()->insert("groups_has_users", [
-            "users_id" => SessionUtils::load("id", true),
-            "groups_id" => $lastGroupId
-        ]);
-        
-        App::getDB()->insert("categories",[
-        "name" => "no category",
-        "color" => "red",
-        "owner_group" => $lastGroupId,
-        "is_group_category" => 1]
-        );
+            App::getDB()->insert("groups_has_users", [
+                  "users_id" => SessionUtils::load("id", true),
+                  "groups_id" => $lastGroupId
+            ]);
+            
+            App::getDB()->insert("categories",[
+            "name" => "no category",
+            "color" => "red",
+            "owner_group" => $lastGroupId,
+            "is_group_category" => 1]
+            );
+        } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+        }
   }
 
   function returnToAddGroup() {
@@ -169,16 +179,21 @@ class GroupsCtrl {
             return false;
       }
 
-      $databaseCheck = App::getDB()->get("groups_has_users",
-      ["[><]groups" => ["groups_id" => "id"]],
-      ["groups.name", "groups.owner"],
-      ["AND" =>
-            ["groups_id" => $groupId,
-            "users_id" => SessionUtils::load("id", true)]
-      ]);
+      try{
+            $databaseCheck = App::getDB()->get("groups_has_users",
+            ["[><]groups" => ["groups_id" => "id"]],
+            ["groups.name", "groups.owner"],
+            ["AND" =>
+                  ["groups_id" => $groupId,
+                  "users_id" => SessionUtils::load("id", true)]
+            ]);
 
-      if($databaseCheck == null){
-            return false;
+            if($databaseCheck == null){
+                  return false;
+            }
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
       }
       
       SessionUtils::store("groupId", $groupId);
@@ -222,20 +237,26 @@ class GroupsCtrl {
       if($v->isLastOK() == false){
             return false;
       }
+        try{
       
-      $groups = App::getDB()->get("groups", 
-      "*", 
-      [
-            "AND" =>
+            $groups = App::getDB()->get("groups", 
+            "*", 
             [
-            "id" => $this->groupForm->id,
-            "owner" => SessionUtils::load("id", true)
-            ]
-        ]);
-        
-      if($groups == null){
+                  "AND" =>
+                  [
+                  "id" => $this->groupForm->id,
+                  "owner" => SessionUtils::load("id", true)
+                  ]
+            ]);
+            
+            if($groups == null){
+                  return false;
+            }
+        } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
             return false;
-      }
+        }
       
       // There should be only one
       $this->groupForm->groupName = $groups["name"];
@@ -287,24 +308,35 @@ class GroupsCtrl {
             return false;
         }
         
-      if(!App::getDB()->has("groups",
-      [
-            "AND" =>
+        try{
+            if(!App::getDB()->has("groups",
             [
-            "id" => $this->groupForm->id,
-            "owner" => SessionUtils::load("id", true)
-            ]
-        ])){
+                  "AND" =>
+                  [
+                  "id" => $this->groupForm->id,
+                  "owner" => SessionUtils::load("id", true)
+                  ]
+            ])){
+                  return false;
+            }
+        } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
             return false;
-      }
+        }
 
         return true;
   }
 
   function saveGroup() {
-      App::getDB()->update("groups", [
-      "name" => $this->groupForm->groupName],
-            ["id" => $this->groupForm->id]);
+        try{
+            App::getDB()->update("groups", [
+            "name" => $this->groupForm->groupName],
+                  ["id" => $this->groupForm->id]);
+        } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+        }
   }
 
   /* #endregion */
@@ -332,16 +364,21 @@ class GroupsCtrl {
       if($v->isLastOK() == false){
             return false;
       }
-      
-      if(!App::getDB()->has("groups",
-      [
-            "AND" =>
+      try{
+            if(!App::getDB()->has("groups",
             [
-            "id" => $this->groupForm->id,
-            "owner" => SessionUtils::load("id", true)
-            ]
-        ])){
-            return false;
+                  "AND" =>
+                  [
+                  "id" => $this->groupForm->id,
+                  "owner" => SessionUtils::load("id", true)
+                  ]
+            ])){
+                  return false;
+            }
+      } catch (\PDOException $e) {
+      $m = new Message("Connection error", "error");
+      App::getMessages()->addMessage($m);
+      return false;
       }
 
       $this->userSearchMail = $v->validateFromRequest("mail");
@@ -354,39 +391,44 @@ class GroupsCtrl {
   }
 
   function getAllUsers() {
-      // filtering
+      try{
+            // filtering
 
-      $members = App::getDB()->select(
-      "groups_has_users",
-      ["users_id"], 
-      ["groups_id" => $this->groupForm->id]
-      );
-      
-      $members_id = [];
-      foreach($members as $member) {
-            $members_id[] = $member["users_id"];
+            $members = App::getDB()->select(
+            "groups_has_users",
+            ["users_id"], 
+            ["groups_id" => $this->groupForm->id]
+            );
+            
+            $members_id = [];
+            foreach($members as $member) {
+                  $members_id[] = $member["users_id"];
+            }
+
+            $search_params = [];
+            if (isset($this->userSearchMail) && strlen($this->userSearchMail) > 0) {
+                  $search_params['mail[~]'] = $this->userSearchMail . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
+            }
+            $search_params['id[!]'] = $members_id;
+            $where = ["AND" => &$search_params];
+
+            $uniqueMembers = App::getDB()->select(
+            "users",
+            ["id", "mail", "role"], 
+            $where
+            );
+            $this->lastPage = count($uniqueMembers) / 21;
+            
+            $where = ["AND" => &$search_params, "LIMIT" => [$this->currentPage*21, 21]];
+            $uniqueMembers = App::getDB()->select(
+            "users",
+            ["id", "mail", "role"], 
+            $where
+            );
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
       }
-
-      $search_params = [];
-      if (isset($this->userSearchMail) && strlen($this->userSearchMail) > 0) {
-            $search_params['mail[~]'] = $this->userSearchMail . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
-      }
-      $search_params['id[!]'] = $members_id;
-      $where = ["AND" => &$search_params];
-
-      $uniqueMembers = App::getDB()->select(
-      "users",
-      ["id", "mail", "role"], 
-      $where
-      );
-      $this->lastPage = count($uniqueMembers) / 21;
-      
-      $where = ["AND" => &$search_params, "LIMIT" => [$this->currentPage*21, 21]];
-      $uniqueMembers = App::getDB()->select(
-      "users",
-      ["id", "mail", "role"], 
-      $where
-      );
 
       App::getSmarty()->assign("page", $this->currentPage);
       App::getSmarty()->assign("lastPage", $this->lastPage);
@@ -424,23 +466,29 @@ class GroupsCtrl {
             return false;
       }
       
-      if(!App::getDB()->has("groups",
-      [
-            "AND" =>
+      try{
+            if(!App::getDB()->has("groups",
             [
-            "id" => $this->groupForm->id,
-            "owner" => SessionUtils::load("id", true)
-            ]
-        ])){
-            return false;
-      }
+                  "AND" =>
+                  [
+                  "id" => $this->groupForm->id,
+                  "owner" => SessionUtils::load("id", true)
+                  ]
+            ])){
+                  return false;
+            }
 
-      if(!App::getDB()->has( "groups_has_users",
-            ["AND" =>
-            [
-                  "groups_id" => $this->groupForm->id,
-                  "users_id" => $this->addedMember
-            ]])) {
+            if(App::getDB()->has( "groups_has_users",
+                  ["AND" =>
+                  [
+                        "groups_id" => $this->groupForm->id,
+                        "users_id" => $this->addedMember
+                  ]])) {
+                  return false;
+            }
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
             return false;
       }
 
@@ -448,9 +496,14 @@ class GroupsCtrl {
   }
 
   function addNewMember() {
-      App::getDB()->insert("groups_has_users",
-      ["groups_id" => $this->groupForm->id,
-      "users_id" => $this->addedMember]);
+      try{  
+            App::getDB()->insert("groups_has_users",
+            ["groups_id" => $this->groupForm->id,
+            "users_id" => $this->addedMember]);
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+      }
   }
 
   function redirectToEditGroup() {
@@ -488,23 +541,29 @@ class GroupsCtrl {
             return false;
       }
       
-      if(!App::getDB()->has("groups", 
-      [
-            "AND" =>
+      try{
+            if(!App::getDB()->has("groups", 
             [
-            "id" => $this->groupForm->id,
-            "owner" => SessionUtils::load("id", true)
-            ]
-        ])){
-            return false;
-      }
+                  "AND" =>
+                  [
+                  "id" => $this->groupForm->id,
+                  "owner" => SessionUtils::load("id", true)
+                  ]
+            ])){
+                  return false;
+            }
 
-      if(!App::getDB()->has( "groups_has_users",
-            ["AND" =>
-            [
-                  "groups_id" => $this->groupForm->id,
-                  "users_id" => $this->addedMember
-            ]])){
+            if(!App::getDB()->has( "groups_has_users",
+                  ["AND" =>
+                  [
+                        "groups_id" => $this->groupForm->id,
+                        "users_id" => $this->addedMember
+                  ]])){
+                  return false;
+            }
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
             return false;
       }
 
@@ -512,11 +571,17 @@ class GroupsCtrl {
   }
 
   function removeMember() {
-      App::getDB()->delete("groups_has_users", [
-            "AND" =>
-            ["groups_id" => $this->groupForm->id,
-            "users_id" => $this->addedMember]
-      ]);
+      
+      try{
+            App::getDB()->delete("groups_has_users", [
+                  "AND" =>
+                  ["groups_id" => $this->groupForm->id,
+                  "users_id" => $this->addedMember]
+            ]);
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+      }
   }
   
   /* #endregion */
@@ -543,36 +608,47 @@ class GroupsCtrl {
             $this->redirectToListView();
       }
       
-      if(!App::getDB()->has("groups", 
-      [
-            "AND" =>
+      try{
+            if(!App::getDB()->has("groups", 
             [
-            "id" => $this->groupForm->id,
-            "owner" => SessionUtils::load("id", true)
-            ]
-        ])){
-            return false;
+                  "AND" =>
+                  [
+                  "id" => $this->groupForm->id,
+                  "owner" => SessionUtils::load("id", true)
+                  ]
+            ])){
+                  return false;
+            }
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+                  return false;
       }
 
       return true;
   }
 
   function deleteGroup() {
-      App::getDB()->delete("groups_has_users", [
-            "groups_id" => $this->groupForm->id
-      ]);
-      App::getDB()->delete("notes", where: [
-            "AND" =>
-            ["isGroupNote" => 1,
-            "owner_group" => $this->groupForm->id]
-      ]);
-      App::getDB()->delete("categories", [
-            "AND" =>
-            ["is_group_category" => 1,
-            "owner_group" => $this->groupForm->id]
-      ]);
-      App::getDB()->delete("groups",
-      ["id" => $this->groupForm->id]);
+      try{
+            App::getDB()->delete("groups_has_users", [
+                  "groups_id" => $this->groupForm->id
+            ]);
+            App::getDB()->delete("notes", where: [
+                  "AND" =>
+                  ["isGroupNote" => 1,
+                  "owner_group" => $this->groupForm->id]
+            ]);
+            App::getDB()->delete("categories", [
+                  "AND" =>
+                  ["is_group_category" => 1,
+                  "owner_group" => $this->groupForm->id]
+            ]);
+            App::getDB()->delete("groups",
+            ["id" => $this->groupForm->id]);
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+      }
   }
   
   /* #endregion */

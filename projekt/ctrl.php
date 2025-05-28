@@ -34,13 +34,11 @@ Utils::addRoute('addCategory', 'CategoriesCtrl', ['user', 'lead']);
 Utils::addRoute('deleteCategory', 'CategoriesCtrl', ['user', 'lead']);
 
         // for users - working in groups
-        
 Utils::addRoute('groupsList', 'GroupsCtrl', ['user', 'lead']);
 Utils::addRoute('enterGroupSpace', 'GroupsCtrl', ['user', 'lead']);
 Utils::addRoute('exitGroupSpace', 'GroupsCtrl', ['user', 'lead']);
 
         // for leads - managing groups
-
 Utils::addRoute('addGroup', 'GroupsCtrl', 'lead');
 Utils::addRoute('editGroup', 'GroupsCtrl', 'lead');
 Utils::addRoute('saveGroup', 'GroupsCtrl', 'lead');

@@ -38,49 +38,54 @@ class NotesCtrl {
   }
 
   function getRecords() {
-      // filtering from title and category
-      
-      $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
-      if (isset($this->searchForm->title) && strlen($this->searchForm->title) > 0) {
-            $search_params['title[~]'] = $this->searchForm->title . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
-      }
-      if (isset($this->searchForm->category) && $this->searchForm->category >= 0) {
-            $search_params['category'] = $this->searchForm->category;
-      }
-
-      if(SessionUtils::load("groupId", true)){
-            $search_params['isGroupNote'] = '1';
-            $search_params['notes.owner_group'] = SessionUtils::load("groupId", true);  
-      } else {
-            $search_params['isGroupNote'] = '0';
-            $search_params['notes.owner'] = SessionUtils::load("id", true);  
-      }
-
-      $where = ["AND" => &$search_params];
-      $this->lastPage = App::getDB()->count("notes", $where) / 30;
-
-      $where = ["AND" => &$search_params, "LIMIT" => [$this->currentPage*30, 30], "ORDER" => ['lastModified' => 'DESC']];
-      $notesRecords = App::getDB()->select("notes", 
-            [
-                  "[>]categories" => ["category" => "id"]
-            ],
-      ["title", "content", "category", "creationDate", "lastModified", "notes.id", "categories.name"], 
-            $where);
-
-      $categoriesRecords = $this->getCategories();
-
       $notes = array();
-      foreach( $notesRecords as $noteRecord ) {
-            $note = array();
-            $note["title"] = $noteRecord["title"];
-            $note["content"] = mb_strimwidth($noteRecord["content"], 0, 40, '...');
-            $note['category'] = $noteRecord['name'];
-            $unixTime = strtotime($noteRecord["creationDate"]);
-            $note["creationDate"] = date("d-m-Y", $unixTime);
-            $unixTime = strtotime($noteRecord["lastModified"]);
-            $note["lastModified"] = date("d-m-Y", $unixTime);
-            $note["id"] = $noteRecord["id"];
-            $notes[] = $note;
+      try{
+            // filtering from title and category
+            
+            $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
+            if (isset($this->searchForm->title) && strlen($this->searchForm->title) > 0) {
+                  $search_params['title[~]'] = $this->searchForm->title . '%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
+            }
+            if (isset($this->searchForm->category) && $this->searchForm->category >= 0) {
+                  $search_params['category'] = $this->searchForm->category;
+            }
+
+            if(SessionUtils::load("groupId", true)){
+                  $search_params['isGroupNote'] = '1';
+                  $search_params['notes.owner_group'] = SessionUtils::load("groupId", true);  
+            } else {
+                  $search_params['isGroupNote'] = '0';
+                  $search_params['notes.owner'] = SessionUtils::load("id", true);  
+            }
+
+            $where = ["AND" => &$search_params];
+            $this->lastPage = App::getDB()->count("notes", $where) / 30;
+
+            $where = ["AND" => &$search_params, "LIMIT" => [$this->currentPage*30, 30], "ORDER" => ['lastModified' => 'DESC']];
+            $notesRecords = App::getDB()->select("notes", 
+                  [
+                        "[>]categories" => ["category" => "id"]
+                  ],
+            ["title", "content", "category", "creationDate", "lastModified", "notes.id", "categories.name"], 
+                  $where);
+
+            $categoriesRecords = $this->getCategories();
+
+            foreach( $notesRecords as $noteRecord ) {
+                  $note = array();
+                  $note["title"] = $noteRecord["title"];
+                  $note["content"] = mb_strimwidth($noteRecord["content"], 0, 40, '...');
+                  $note['category'] = $noteRecord['name'];
+                  $unixTime = strtotime($noteRecord["creationDate"]);
+                  $note["creationDate"] = date("d-m-Y", $unixTime);
+                  $unixTime = strtotime($noteRecord["lastModified"]);
+                  $note["lastModified"] = date("d-m-Y", $unixTime);
+                  $note["id"] = $noteRecord["id"];
+                  $notes[] = $note;
+            }
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
       }
 
       App::getSmarty()->assign("searchForm", $this->searchForm);
@@ -139,8 +144,12 @@ class NotesCtrl {
                 $params['isGroupNote'] = '0';
                 $params['owner'] = SessionUtils::load("id", true);  
         }
-
+      try{
         App::getDB()->insert("notes", $params);
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+      }
   }
 
   function returnToAddNote() {
@@ -188,16 +197,22 @@ class NotesCtrl {
       }
       $params["id"] = $this->noteId;
 
-      $notes = App::getDB()->get("notes",[
-        "title",
-        "content",
-        "category"
-        ], [
-            "AND" =>
-            $params
-        ]);
-        
-      if($notes == null){
+      try{
+            $notes = App::getDB()->get("notes",[
+            "title",
+            "content",
+            "category"
+            ], [
+                  "AND" =>
+                  $params
+            ]);
+            
+            if($notes == null){
+                  return false;
+            }
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
             return false;
       }
 
@@ -245,12 +260,17 @@ class NotesCtrl {
   }
 
   function saveNote() {
-      App::getDB()->update("notes", [
-      "title" => $this->noteForm->title,
-      "content" => $this->noteForm->text,
-      "category"=> $this->noteForm->category,
-      "lastModified" => date('Y-m-d H:i:s')], 
-            ["id" => $this->noteId]);
+      try{
+            App::getDB()->update("notes", [
+            "title" => $this->noteForm->title,
+            "content" => $this->noteForm->text,
+            "category"=> $this->noteForm->category,
+            "lastModified" => date('Y-m-d H:i:s')], 
+                  ["id" => $this->noteId]);
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+      }
   }
 
   /* #endregion */
@@ -258,12 +278,17 @@ class NotesCtrl {
   /* #region delete note */
 
   function action_deleteNote() {
-      if($this->validateDeleteNote()){
-            App::getDB()->delete("notes", [
-                  "id" => $this->noteId
-            ]);
-        $m = new Message("Note deleted successfully", "info");
-        App::getMessages()->addMessage($m);
+      try{
+            if($this->validateDeleteNote()){
+                  App::getDB()->delete("notes", [
+                        "id" => $this->noteId
+                  ]);
+            $m = new Message("Note deleted successfully", "info");
+            App::getMessages()->addMessage($m);
+            }
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
       }
       
       App::getRouter()->forwardTo('notesList');
@@ -290,11 +315,15 @@ class NotesCtrl {
             $cat_params['is_group_category'] = '0';
             $cat_params['owner'] = SessionUtils::load("id", true);  
       }
-
-      return App::getDB()->select("categories", ["name", "id"], 
-            ["AND" =>
-                &$cat_params]
-        );
+      try{
+            return App::getDB()->select("categories", ["name", "id"], 
+                  ["AND" =>
+                  &$cat_params]
+            );
+      } catch (\PDOException $e) {
+            $m = new Message("Connection error", "error");
+            App::getMessages()->addMessage($m);
+      }
   }
   
   /* #endregion */
