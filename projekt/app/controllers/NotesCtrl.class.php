@@ -101,6 +101,16 @@ class NotesCtrl {
 
   /* #endregion */
   
+  /* #region show notes part list */
+
+  public function action_notesListPart() {
+      $this->validateList();
+      $this->getRecords();
+      App::getSmarty()->display("NotesListPart.tpl");
+  }
+
+  /* #endregion */
+
   /* #region add note */
 
   public function action_addNote() {
@@ -291,7 +301,7 @@ class NotesCtrl {
             App::getMessages()->addMessage($m);
       }
       
-      App::getRouter()->forwardTo('notesList');
+      $this->action_notesListPart();
   }
 
   function validateDeleteNote() {

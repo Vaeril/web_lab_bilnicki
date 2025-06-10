@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-27 11:08:49
+/* Smarty version 5.4.5, created on 2025-06-10 09:18:43
   from 'file:main.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683581215d0579_13698687',
+  'unifunc' => 'content_6847dc533c62a2_23483555',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd645efda29af69fed07f7f4406cbcfa5986f4bad' => 
     array (
       0 => 'main.tpl',
-      1 => 1748336927,
+      1 => 1749539919,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_683581215d0579_13698687 (\Smarty\Template $_smarty_tpl) {
+function content_6847dc533c62a2_23483555 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 ?>
@@ -93,6 +93,11 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
  src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"><?php echo '</script'; ?>
 >
         <![endif]-->
+		
+		<?php echo '<script'; ?>
+ type="text/javascript" src="<?php echo $_smarty_tpl->getValue('conf')->app_url;?>
+/assets/js/functions.js"><?php echo '</script'; ?>
+>
 
     </head>
 	
@@ -111,7 +116,7 @@ $_smarty_tpl->getInheritance()->init($_smarty_tpl, false);
 			        <div class="container">
 
 						<?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_10856205656835812159cb35_88061544', 'left_navbar');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_7802055806847dc533936f3_53965751', 'left_navbar');
 ?>
 
 
@@ -120,7 +125,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1085620565683
 			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
 								<?php if ((\core\RoleUtils::inRole("lead") || \core\RoleUtils::inRole("user"))) {?>
 			                    <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_519423580683581215a8b79_82830880', 'return_action');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_17043893086847dc5339f2c3_95209484', 'return_action');
 ?>
 
 								<?php }?>
@@ -171,7 +176,7 @@ logout">log out</a></li>
 
 		<!--welcome-hero start -->
                 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_2000035819683581215c4087_36259193', 'welcome_hero');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_15991487296847dc533b9f39_37462054', 'welcome_hero');
 ?>
 
                 <!--/.welcome-hero-->
@@ -181,7 +186,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_2000035819683
 		<section id="explore" class="explore">
 			<div class="container">
                 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1104482686683581215c5c83_84844179', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_18250979916847dc533bb7f2_13512948', 'main_body');
 ?>
 
 			</div><!--/.container-->
@@ -193,7 +198,7 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1104482686683
 		<section id="messages" class="explore">
 		<div class="container">
 			<?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1157582649683581215c7087_78268856', 'messages');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_13545471986847dc533bcbf4_41781822', 'messages');
 ?>
 
 		</div>
@@ -282,10 +287,13 @@ $_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_1157582649683
 >
         
     </body>
+        <?php echo '<script'; ?>
+> feather.replace() <?php echo '</script'; ?>
+>
 	
 </html><?php }
 /* {block 'left_navbar'} */
-class Block_10856205656835812159cb35_88061544 extends \Smarty\Runtime\Block
+class Block_7802055806847dc533936f3_53965751 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -293,7 +301,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'left_navbar'} */
 /* {block 'return_action'} */
-class Block_519423580683581215a8b79_82830880 extends \Smarty\Runtime\Block
+class Block_17043893086847dc5339f2c3_95209484 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -301,7 +309,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'return_action'} */
 /* {block 'welcome_hero'} */
-class Block_2000035819683581215c4087_36259193 extends \Smarty\Runtime\Block
+class Block_15991487296847dc533b9f39_37462054 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -311,7 +319,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'welcome_hero'} */
 /* {block 'main_body'} */
-class Block_1104482686683581215c5c83_84844179 extends \Smarty\Runtime\Block
+class Block_18250979916847dc533bb7f2_13512948 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';
@@ -321,7 +329,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'main_body'} */
 /* {block 'messages'} */
-class Block_1157582649683581215c7087_78268856 extends \Smarty\Runtime\Block
+class Block_13545471986847dc533bcbf4_41781822 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views\\templates';

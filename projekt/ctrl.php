@@ -21,6 +21,7 @@ Utils::addRoute('redirect', 'LoginCtrl', ['user', 'lead']);
 
         // for users - managing notes
 Utils::addRoute('notesList', 'NotesCtrl', ['user', 'lead']);
+Utils::addRoute('notesListPart', 'NotesCtrl', ['user', 'lead']);
 Utils::addRoute('editNote', 'NotesCtrl', ['user', 'lead']);
 Utils::addRoute('saveNote','NotesCtrl', ['user', 'lead']);
 Utils::addRoute('addNote', 'NotesCtrl', ['user', 'lead']);
@@ -51,7 +52,7 @@ App::getRouter()->go();
 
 // After all actions:
 /*
-        - try and catch in all places with database
+        - try and catch in all places with database     -> done
         - safeguarding to editing notes, categories, groups     -> done
         - stronnicowanie rezultatów: notatki i grupy, użytkownicy       -> done
         - ograniczenie w liczbie tworzonych kategorii do 20     -> done

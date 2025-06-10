@@ -1,55 +1,54 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-28 17:18:43
+/* Smarty version 5.4.5, created on 2025-06-10 08:53:14
   from 'file:NotesList.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_68372953bfebc6_13111225',
+  'unifunc' => 'content_6847d65a39e982_34035821',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ba518145986cf2f53f909a4b182e6264c9207f12' => 
     array (
       0 => 'NotesList.tpl',
-      1 => 1748445519,
+      1 => 1749538378,
       2 => 'file',
     ),
   ),
   'includes' => 
   array (
+    'file:NotesListPart.tpl' => 1,
     'file:messages.tpl' => 1,
   ),
 ))) {
-function content_68372953bfebc6_13111225 (\Smarty\Template $_smarty_tpl) {
+function content_6847d65a39e982_34035821 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
 
 
 <?php if (\core\SessionUtils::load("groupId",true)) {
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_199111241068372953bc76e0_69269928', 'left_navbar');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_6610961726847d65a3749a2_86559310', 'left_navbar');
 ?>
 
     <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_203281415268372953bcdc92_69703226', 'return_action');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_5490135406847d65a37bb55_53543999', 'return_action');
 ?>
 
 <?php }?>
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_101108204368372953bd1db9_88959502', 'main_body');
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_4947395386847d65a37f7e0_22900833', 'main_body');
 ?>
 
 
 <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_129585876368372953bfaa14_46308783', "messages");
-?>
-
-<?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, "main.tpl", $_smarty_current_dir);
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_9541400496847d65a39cee8_85785944', "messages");
+$_smarty_tpl->getInheritance()->endChild($_smarty_tpl, "main.tpl", $_smarty_current_dir);
 }
 /* {block 'left_navbar'} */
-class Block_199111241068372953bc76e0_69269928 extends \Smarty\Runtime\Block
+class Block_6610961726847d65a3749a2_86559310 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
@@ -69,7 +68,7 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 }
 /* {/block 'left_navbar'} */
 /* {block 'return_action'} */
-class Block_203281415268372953bcdc92_69703226 extends \Smarty\Runtime\Block
+class Block_5490135406847d65a37bb55_53543999 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
@@ -80,7 +79,7 @@ exitGroupSpace">return</a></li><?php
 }
 /* {/block 'return_action'} */
 /* {block 'main_body'} */
-class Block_101108204368372953bd1db9_88959502 extends \Smarty\Runtime\Block
+class Block_4947395386847d65a37f7e0_22900833 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
@@ -88,8 +87,8 @@ $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views
 
 
         <div class="welcome-hero-serch-box">
-            <form action="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-notesList">
+            <form id="search-form" onsubmit="ajaxPostForm('search-form','<?php echo $_smarty_tpl->getValue('conf')->action_root;?>
+notesListPart','list'); return false;">
                 <div class="welcome-hero-form">
                     <div class="single-welcome-hero-form">
                         <h3>title</h3>
@@ -131,45 +130,11 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
         </div>
 
 
-<div class="explore-content">
+<div class="explore-content" id="list">
 
-            <div class="row">
-
-                <?php
-$_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('records'), 'r');
-$foreach1DoElse = true;
-foreach ($_from ?? [] as $_smarty_tpl->getVariable('r')->value) {
-$foreach1DoElse = false;
+<?php $_smarty_tpl->renderSubTemplate("file:NotesListPart.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
 ?>
-                <div class=" col-md-4 col-sm-6"><div class="single-explore-item"><div class="single-explore-txt bg-theme-1"><h2><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-editNote/<?php echo $_smarty_tpl->getValue('r')['id'];?>
-"><?php echo $_smarty_tpl->getValue('r')["title"];?>
-</a></h2><p class="explore-rating-price">utworzono <?php echo $_smarty_tpl->getValue('r')["creationDate"];?>
-<span class="explore-price-box">edytowano <?php echo $_smarty_tpl->getValue('r')["lastModified"];?>
-</span></p><div class="explore-person"><div class="row"><div class="col-sm-10"><p><?php echo $_smarty_tpl->getValue('r')["content"];?>
-</p></div></div></div><div class="explore-open-close-part"><div class="row"><div class="col-sm-5"><p> <?php echo $_smarty_tpl->getValue('r')["category"];?>
-</p></div><div class="col-sm-7"><div class="explore-map-icon"><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-editNote/<?php echo $_smarty_tpl->getValue('r')['id'];?>
-"><i data-feather="edit-2"></i></a><a href="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-deleteNote/<?php echo $_smarty_tpl->getValue('r')['id'];?>
-"><i data-feather="trash"></i></a></div></div></div></div></div></div></div>
-                <?php
-}
-$_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
 
-
-                <div class="row">
-                <div class=" col-md-4 col-sm-6">
-                    <form action="<?php echo $_smarty_tpl->getValue('conf')->action_url;?>
-addNote">
-                    <button class="welcome-hero-btn">
-                        + new note
-                    </button>
-                    </form>
-                </div>
-                </div>
-
-            </div>
 </div>
 
 <section id="list-topics" class="list-topics">
@@ -212,7 +177,7 @@ notesList?page=<?php echo $_smarty_tpl->getValue('page')+1;?>
 }
 /* {/block 'main_body'} */
 /* {block "messages"} */
-class Block_129585876368372953bfaa14_46308783 extends \Smarty\Runtime\Block
+class Block_9541400496847d65a39cee8_85785944 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\web_lab_bilnicki\\projekt\\app\\views';
